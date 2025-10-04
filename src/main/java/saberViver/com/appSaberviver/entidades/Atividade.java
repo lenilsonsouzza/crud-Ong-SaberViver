@@ -2,7 +2,10 @@ package saberViver.com.appSaberviver.entidades;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_atividade")
@@ -10,31 +13,42 @@ public class Atividade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAtividade;
+    private long Id;
     private String nome;
+    @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @ManyToMany(mappedBy = "atividades")
-    private List<Aluno> alunos;
 
     @ManyToMany(mappedBy = "atividades")
-    private List<Colaborador> colaboradores;
-public Atividade(){
+    private List<Aluno> alunos = new ArrayList<>();
 
-}
-    public Atividade(long idAtividade,String nome, String descricao) {
-        this.idAtividade=idAtividade;
+    public List<Colaborador> getColaboradores() {
+        return colaboradores;
+    }
+
+    @ManyToMany(mappedBy = "atividades")
+    private List<Colaborador> colaboradores = new ArrayList<>();
+
+    public Atividade() {
+
+    }
+
+
+    public Atividade(long id, String nome, String descricao) {
+        this.Id = id;
         this.nome = nome;
         this.descricao = descricao;
     }
 
-    public long getIdAtividade() {
-        return idAtividade;
+
+    public List<Aluno> getAlunos() {
+        return alunos;
     }
 
-    public void setIdAtividade(long idAtividade) {
-        this.idAtividade = idAtividade;
+    public long getId() {
+        return Id;
     }
+
 
     public String getNome() {
         return nome;
@@ -53,5 +67,11 @@ public Atividade(){
         this.descricao = discricao;
     }
 
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
+    public String getDescricao() {
+        return descricao;
+    }
 }

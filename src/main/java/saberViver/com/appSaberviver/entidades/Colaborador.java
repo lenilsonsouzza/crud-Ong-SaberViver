@@ -1,10 +1,10 @@
 package saberViver.com.appSaberviver.entidades;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.IdGeneratorType;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
@@ -14,7 +14,7 @@ public class Colaborador extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idColab;
+    private long    Id;
     private String funcao;
 
     @ManyToMany
@@ -23,38 +23,31 @@ public class Colaborador extends Usuario {
             joinColumns = @JoinColumn(name = "colaborador_id"), // FK colaborador
             inverseJoinColumns = @JoinColumn(name = "atividade_id") // FK atividade
     )
-       private List<Atividade> atividades;
+    private List<Atividade> atividades = new ArrayList<>();
 
 public Colaborador(){
 
 }
-    public Colaborador(long idColab, String nome, String email, int senha, int cpf, LocalDate dataNascimento,
-                       TipoUsuario tipoUsuario, String funcao, List<Atividade> atividades) {
-        super(nome, email, senha, cpf, dataNascimento);
-       this.idColab=idColab;
-        this.funcao = funcao;
-        this.atividades=atividades;
-    }
-    public String getFuncao() {
-        return funcao;
-    }
 
-    public void setFuncao(String funcao) {
-        this.funcao = funcao;
+    public Colaborador( long id,String nome, String email, int senha, int cpf, LocalDate dataNascimento,
+                        String funcao) {
+        super(nome, email, senha, cpf, dataNascimento);
+       this.Id=id;
+       this.funcao = funcao;
     }
 
     public List<Atividade> getAtividades() {
         return atividades;
     }
-
-    public void setAtividades(List<Atividade> atividades) {
-        this.atividades = atividades;
-    }
-    public long getIdColab() {
-        return idColab;
+    public String getFuncao() {
+        return funcao;
     }
 
-    public void setIdColab(long idColab) {
-        this.idColab = idColab;
+      public void setFuncao(String funcao) {
+        this.funcao = funcao;
+    }
+
+    public long getId() {
+        return Id;
     }
 }

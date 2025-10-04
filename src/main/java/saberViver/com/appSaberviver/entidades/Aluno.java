@@ -4,24 +4,17 @@ import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "tb_aluno")
 public class Aluno extends Usuario{
-    public long getIdAluno() {
-        return idAluno;
-    }
 
-
-
-    public void setIdAluno(long idAluno) {
-        this.idAluno = idAluno;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAluno;
+    private long Id;
     private String nomeResponsavel;
     private String cpfResponsavel;
 
@@ -31,16 +24,15 @@ public class Aluno extends Usuario{
             joinColumns = @JoinColumn(name = "aluno_id"), // FK aluno
             inverseJoinColumns = @JoinColumn(name = "atividade_id") // FK atividade
     )
-    private List<Atividade> atividades;
+    private List<Atividade> atividades = new ArrayList<>();
 public Aluno(){
 
 }
-    public Aluno(long idAluno, String nome, String email, int senha, int cpf, LocalDate dataNascimento, String nomeResponsavel, String cpfResponsavel, List<Atividade> atividades) {
+    public Aluno(long id, String nome, String email, int senha, int cpf, LocalDate dataNascimento, String nomeResponsavel, String cpfResponsavel) {
         super(nome, email, senha, cpf, dataNascimento);
-        this.idAluno=idAluno;
+        this.Id=id;
         this.nomeResponsavel = nomeResponsavel;
         this.cpfResponsavel = cpfResponsavel;
-        this.atividades = atividades;
     }
 
     public String getNomeResponsavel() {
@@ -61,8 +53,9 @@ public Aluno(){
     public List<Atividade> getAtividades() {
         return atividades;
     }
-
-    public void setAtividades(List<Atividade> atividades) {
-        this.atividades = atividades;
+    public long getId() {
+        return Id;
     }
+
+
 }

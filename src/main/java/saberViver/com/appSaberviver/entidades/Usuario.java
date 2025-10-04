@@ -1,13 +1,16 @@
 package saberViver.com.appSaberviver.entidades;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
 import java.time.LocalDate;
 @MappedSuperclass
 public class Usuario {
         private String nome;
-    private String email;
-    private int senha;
+        @Column(unique = true)
+        private String email;
+        private int senha;
+    @Column(unique = true)
     private int cpf;
     private LocalDate dataNascimento;
 
