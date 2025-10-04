@@ -28,8 +28,8 @@ public class Aluno extends Usuario{
 public Aluno(){
 
 }
-    public Aluno(long id, String nome, String email, int senha, int cpf, LocalDate dataNascimento, String nomeResponsavel, String cpfResponsavel) {
-        super(nome, email, senha, cpf, dataNascimento);
+    public Aluno(long id, String nome,int senha, int cpf, LocalDate dataNascimento, String nomeResponsavel, String cpfResponsavel) {
+        super(nome,senha, cpf, dataNascimento);
         this.Id=id;
         this.nomeResponsavel = nomeResponsavel;
         this.cpfResponsavel = cpfResponsavel;

@@ -14,8 +14,10 @@ public class Colaborador extends Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long    Id;
+    private long Id;
+    private String email;
     private String funcao;
+
 
     @ManyToMany
     @JoinTable(
@@ -25,25 +27,27 @@ public class Colaborador extends Usuario {
     )
     private List<Atividade> atividades = new ArrayList<>();
 
-public Colaborador(){
+    public Colaborador() {
 
-}
+    }
 
-    public Colaborador( long id,String nome, String email, int senha, int cpf, LocalDate dataNascimento,
-                        String funcao) {
-        super(nome, email, senha, cpf, dataNascimento);
-       this.Id=id;
-       this.funcao = funcao;
+    public Colaborador(long id, String nome, int senha, int cpf, LocalDate dataNascimento,
+                       String funcao, String email) {
+        super(nome, senha, cpf, dataNascimento);
+        this.Id = id;
+        this.funcao = funcao;
+        this.email = email;
     }
 
     public List<Atividade> getAtividades() {
         return atividades;
     }
+
     public String getFuncao() {
         return funcao;
     }
 
-      public void setFuncao(String funcao) {
+    public void setFuncao(String funcao) {
         this.funcao = funcao;
     }
 
