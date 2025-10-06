@@ -5,13 +5,14 @@ import jakarta.persistence.MappedSuperclass;
 
 import java.time.LocalDate;
 @MappedSuperclass
-public class Usuario {
+public class  Usuario {
         private String nome;
         @Column(unique = true)
-        private int senha;
+        private String senha;
     @Column(unique = true)
-    private int cpf;
+    private String cpf;
     private LocalDate dataNascimento;
+    private String telefone;
 
 
     public Usuario(){
@@ -19,38 +20,55 @@ public class Usuario {
     }
 
 
-    public Usuario( String nome, int senha, int cpf, LocalDate dataNascimento) {
+    public Usuario( String nome, String senha, String cpf, LocalDate dataNascimento,String telefone) {
         this.nome = nome;
-
         this.senha = senha;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
+        this.telefone=telefone;
 
     }
 
+    public String getTelefone() {
+        return telefone;
+    }
 
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 
     public String getNome() {
         return nome;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nome='" + nome + '\'' +
+                ", senha='" + senha + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", telefone='" + telefone + '\'' +
+                '}';
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public int getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public void setSenha(int senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

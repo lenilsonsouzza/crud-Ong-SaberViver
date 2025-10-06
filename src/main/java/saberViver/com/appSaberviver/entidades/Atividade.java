@@ -20,16 +20,9 @@ public class Atividade {
     @ManyToMany(mappedBy = "atividades")
     private List<Aluno> alunos = new ArrayList<>();
 
-    public List<Colaborador> getColaboradores() {
-        return colaboradores;
-    }
 
     @ManyToMany(mappedBy = "atividades")
-    private List<Colaborador> colaboradores = new ArrayList<>();
-
-    public Atividade() {
-
-    }
+    private List<Professor> professores = new ArrayList<>();
 
 
     public Atividade(long id, String nome, String descricao) {
@@ -38,9 +31,21 @@ public class Atividade {
         this.descricao = descricao;
     }
 
+    public List<Professor> getProfessores() {
+        return professores;
+    }
 
     public List<Aluno> getAlunos() {
         return alunos;
+    }
+
+    @Override
+    public String toString() {
+        return "Atividade{" +
+                "Id=" + Id +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                '}';
     }
 
     public long getId() {
@@ -57,13 +62,6 @@ public class Atividade {
         this.nome = nome;
     }
 
-    public String getDiscricao() {
-        return descricao;
-    }
-
-    public void setDiscricao(String discricao) {
-        this.descricao = discricao;
-    }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
