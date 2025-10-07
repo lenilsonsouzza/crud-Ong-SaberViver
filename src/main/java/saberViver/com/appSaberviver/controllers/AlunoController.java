@@ -40,4 +40,16 @@ public class AlunoController {
                 .buildAndExpand(dto.getId()).toUri();
             return ResponseEntity.created(uri).body(dto);
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AlunoDTO> atualizar(@PathVariable long id, @RequestBody AlunoDTO dto) {
+        dto = alunoServico.atualizar(id,dto);
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        alunoServico.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

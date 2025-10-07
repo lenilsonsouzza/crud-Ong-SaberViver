@@ -59,6 +59,14 @@ public class Aluno  {
         this.atividades = atividades;
     }
 
+    @PreRemove
+    private void removerRelacionamentos() {
+        for (Atividade atividade : atividades) {
+            atividade.getAlunos().remove(this);
+        }
+        atividades.clear();
+    }
+
     public long getId() {
         return Id;
     }

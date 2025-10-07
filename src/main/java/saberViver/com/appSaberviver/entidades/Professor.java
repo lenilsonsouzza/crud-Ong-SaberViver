@@ -20,7 +20,6 @@ public class Professor extends Usuario {
     private String turma;
 
 
-
     @ManyToMany
     @JoinTable(
             name = "tb_professor_atividade", // tabela intermediária
@@ -33,13 +32,21 @@ public class Professor extends Usuario {
 
     }
 
-    public Professor(String nome, String senha, String cpf, LocalDate dataNascimento,String telefone, long id,
-                     String areaAtuacao, String email,String turma) {
-        super(nome, senha, cpf, dataNascimento,telefone);
+    public Professor(String nome, String senha, String cpf, LocalDate dataNascimento, String telefone, long id,
+                     String areaAtuacao, String email, String turma) {
+        super(nome, senha, cpf, dataNascimento, telefone);
         this.Id = id;
         this.areaAtuacao = areaAtuacao;
         this.email = email;
-        this.turma=turma;
+        this.turma = turma;
+    }
+
+    @PreRemove
+    private void removerRelacionamentos() {
+        for (Atividade atividade : atividades) {
+            atividade.getAlunos().remove(this);
+        }
+        atividades.clear();
     }
 
     public void setEmail(String email) {
@@ -81,7 +88,7 @@ public class Professor extends Usuario {
     @Override
     public String toString() {
         return "Professor{" +
-                super.toString()+
+                super.toString() +
                 "Id=" + Id +
                 ", email='" + email + '\'' +
                 ", areaAtuacao='" + areaAtuacao + '\'' +

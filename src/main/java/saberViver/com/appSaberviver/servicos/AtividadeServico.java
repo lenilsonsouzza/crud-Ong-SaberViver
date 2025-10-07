@@ -13,36 +13,53 @@ import org.springframework.data.domain.Page;
 public class AtividadeServico {
 
     @Autowired
-    private AtividadeRepositorio repository;
+    private AtividadeRepositorio atividadeRepositorio;
 
     @Transactional(readOnly = true)
     public AtividadeDTO findById(Long id) {
 
-        //Optional<Atividade> result  = repository.findById(id);
-        Atividade atividade = repository.findById(id).get();
+        Atividade atividade = atividadeRepositorio.findById(id).get();
         return new AtividadeDTO(atividade);
-        //AtividadeDTO dto = new AtividadeDTO(atividade);
-        // return  dto;
-
     }
 
     @Transactional(readOnly = true)
     public Page<AtividadeDTO> findALL(Pageable pageable) {
 
-        Page<Atividade> result = repository.findAll(pageable);
+        Page<Atividade> result = atividadeRepositorio.findAll(pageable);
         return result.map(x -> new AtividadeDTO(x));
-
     }
 
     @Transactional
     public AtividadeDTO inserir(AtividadeDTO dto) {
-        Atividade entidade = new Atividade();
-        entidade.setNome(dto.getNome());
-        entidade.setDescricao(dto.getDescricao());
 
-        entidade= repository.save(entidade);
+        Atividade entidade = new Atividade();
+
+        copiarDtoPentidade(dto, entidade);
+        entidade = atividadeRepositorio.save(entidade);
 
         return new AtividadeDTO(entidade);
     }
+
+    @Transactional
+    public AtividadeDTO atualizar(long id, AtividadeDTO dto) {
+        Atividade entidade = atividadeRepositorio.getReferenceById(id);
+
+        copiarDtoPentidade(dto, entidade);
+
+        entidade = atividadeRepositorio.save(entidade);
+
+        return new AtividadeDTO(entidade);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+       atividadeRepositorio.deleteById(id);
+    }
+
+    private void copiarDtoPentidade(AtividadeDTO dto, Atividade entidade) {
+        entidade.setNome(dto.getNome());
+        entidade.setDescricao(dto.getDescricao());
+    }
+
 
 }

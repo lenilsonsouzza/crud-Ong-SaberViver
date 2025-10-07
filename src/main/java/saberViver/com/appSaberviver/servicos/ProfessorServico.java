@@ -24,19 +24,46 @@ public class ProfessorServico {
     private final AtividadeRepositorio atividadeRepositorio;
 
     @Transactional(readOnly = true)
-public ProfessorDTO findById(Long id){
-    Professor professor = professorRepositorio.findById(id).get();
-    return  new ProfessorDTO(professor);
-}
+    public ProfessorDTO findById(Long id) {
+        Professor professor = professorRepositorio.findById(id).get();
+        return new ProfessorDTO(professor);
+    }
+
     @Transactional(readOnly = true)
     public Page<ProfessorDTO> findALL(Pageable pageable) {
 
         Page<Professor> result = professorRepositorio.findAll(pageable);
         return result.map(x -> new ProfessorDTO(x));
     }
+
     @Transactional
     public ProfessorDTO inserir(ProfessorDTO dto) {
         Professor entidade = new Professor();
+        copiarDtoparaEntidade(dto, entidade);
+
+        entidade = professorRepositorio.save(entidade);
+        return new ProfessorDTO(entidade);
+
+    }
+    @Transactional
+    public ProfessorDTO atualizar(long id,ProfessorDTO dto) {
+        Professor entidade = professorRepositorio.getReferenceById(id);
+
+        copiarDtoparaEntidade(dto, entidade);
+
+        entidade = professorRepositorio.save(entidade);
+        return new ProfessorDTO(entidade);
+
+    }
+
+    public void deletar(Long id) {
+        Professor professor = professorRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("professor não encontrado"));
+
+        professorRepositorio.delete(professor);
+    }
+
+    private void copiarDtoparaEntidade(ProfessorDTO dto, Professor entidade) {
         entidade.setNome(dto.getNome());
         entidade.setCpf(dto.getCpf());
         entidade.setEmail(dto.getEmail());
@@ -51,17 +78,7 @@ public ProfessorDTO findById(Long id){
             entidade.getAtividades().addAll(atividades);
         }
 
-        entidade = professorRepositorio.save(entidade);
-        return new ProfessorDTO(entidade);
-
-
     }
-
-    public List<ProfessorDTO> listarTodos() {
-        return professorRepositorio.findAll().stream().map(ProfessorDTO::new).toList();
-    }
-
-
 
 
 }

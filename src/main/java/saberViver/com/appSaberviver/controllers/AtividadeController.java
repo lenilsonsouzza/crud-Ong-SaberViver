@@ -41,4 +41,15 @@ public class AtividadeController {
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
+    @PutMapping (value = "/{id}")
+    public ResponseEntity<AtividadeDTO> atualizar(@PathVariable long id, @RequestBody AtividadeDTO dto) {
+         dto = atividadeServico.atualizar(id,dto);
+        return ResponseEntity.ok(dto);
+    }
+    @DeleteMapping (value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+     atividadeServico.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
