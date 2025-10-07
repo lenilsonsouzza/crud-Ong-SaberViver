@@ -2,9 +2,11 @@ package saberViver.com.appSaberviver.dto;
 
 
 import saberViver.com.appSaberviver.entidades.Aluno;
+import saberViver.com.appSaberviver.entidades.Atividade;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoDTO {
@@ -17,7 +19,7 @@ public class AlunoDTO {
     private String cpfResponsavel;
     private String telefonePrincipal;
     private String telefoneOpcional;
-    private List<AtividadeDTO> atividade;
+   private List<Long> atividade = new ArrayList<Long>();
 
 
     public AlunoDTO() {
@@ -40,12 +42,20 @@ public class AlunoDTO {
         dataNascimento = entidade.getDataNascimento();
         cpfResponsavel = entidade.getCpfResponsavel();
         telefonePrincipal = entidade.getTelefonePrincipal();
-        atividade = entidade.getAtividades().stream().map(AtividadeDTO::new).toList();
+        //atividade = entidade.getAtividades().stream().map(AtividadeDTO::new).toList();
+        this.atividade = entidade.getAtividades()
+                .stream()
+                .map(Atividade::getId)
+                .toList();
 
     }
 
+    public List<Long> getAtividade() {
+        return atividade;
+    }
+
     public AlunoDTO(long id, String nome, String apelido, String cpf, LocalDate dataNascimento, String nomeResponsavel,
-                    String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<AtividadeDTO> atividade) {
+                    String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Long> atividade) {
         Id = id;
         this.nome = nome;
         this.apelido = apelido;
@@ -64,6 +74,18 @@ public class AlunoDTO {
 
     public void setId(long id) {
         Id = id;
+    }
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public String getTelefonePrincipal() {
+        return telefonePrincipal;
+    }
+
+    public String getTelefoneOpcional() {
+        return telefoneOpcional;
     }
 
     public void setNomeResponsavel(String nomeResponsavel) {
@@ -99,4 +121,6 @@ public class AlunoDTO {
     public String getCpfResponsavel() {
         return cpfResponsavel;
     }
+
+
 }

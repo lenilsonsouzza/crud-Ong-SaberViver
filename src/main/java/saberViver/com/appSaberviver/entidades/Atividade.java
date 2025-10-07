@@ -24,6 +24,9 @@ public class Atividade {
     @ManyToMany(mappedBy = "atividades")
     private List<Professor> professores = new ArrayList<>();
 
+    public Atividade() {
+
+    }
 
     public Atividade(long id, String nome, String descricao) {
         this.Id = id;

@@ -1,8 +1,10 @@
 package saberViver.com.appSaberviver.dto;
 
+import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.entidades.Professor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfessorDTO {
@@ -14,8 +16,11 @@ public class ProfessorDTO {
     private long id;
     private String areaAtuacao;
     private String email;
-    private List<AtividadeDTO> atividade;
+    private String telefonePricipal;
+    private List<Long> atividade = new ArrayList<Long>();
     private String turma;
+
+
 
     public ProfessorDTO(Professor entidade) {
         id = entidade.getId();
@@ -25,7 +30,13 @@ public class ProfessorDTO {
         email = entidade.getEmail();
         areaAtuacao = entidade.getAreaAtuacao();
         turma=entidade.getTurma();
-        atividade=entidade.getAtividades().stream().map(AtividadeDTO::new).toList();
+        telefonePricipal=entidade.getTelefone();
+
+        this.atividade = entidade.getAtividades()
+                .stream()
+                .map(Atividade::getId)
+                .toList();
+
     }
 
 
@@ -33,21 +44,7 @@ public class ProfessorDTO {
 
     }
 
-    public String getTurma() {
-        return turma;
-    }
 
-    public void setTurma(String turma) {
-        this.turma = turma;
-    }
-
-    public List<AtividadeDTO> getAtividade() {
-        return atividade;
-    }
-
-    public void setAtividade(List<AtividadeDTO> atividade) {
-        this.atividade = atividade;
-    }
 
     public ProfessorDTO(String nome, String senha, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
         this.nome = nome;
@@ -58,6 +55,29 @@ public class ProfessorDTO {
         this.areaAtuacao = areaAtuacao;
         this.email = email;
         this.turma=turma;
+    }
+    public String getTelefonePricipal() {
+        return telefonePricipal;
+    }
+
+    public void setTelefonePricipal(String telefonePricipal) {
+        this.telefonePricipal = telefonePricipal;
+    }
+
+    public String getTurma() {
+        return turma;
+    }
+
+    public void setTurma(String turma) {
+        this.turma = turma;
+    }
+
+    public List<Long> getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(List<Long> atividade) {
+        this.atividade = atividade;
     }
 
     public String getNome() {

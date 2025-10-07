@@ -6,17 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.AtividadeDTO;
 import saberViver.com.appSaberviver.entidades.Atividade;
-import saberViver.com.appSaberviver.repositories.AtividadeRepository;
+import saberViver.com.appSaberviver.repositories.AtividadeRepositorio;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AtividadeServico {
 
     @Autowired
-    private AtividadeRepository repository;
+    private AtividadeRepositorio repository;
 
     @Transactional(readOnly = true)
     public AtividadeDTO findById(Long id) {
@@ -36,4 +33,16 @@ public class AtividadeServico {
         return result.map(x -> new AtividadeDTO(x));
 
     }
+
+    @Transactional
+    public AtividadeDTO inserir(AtividadeDTO dto) {
+        Atividade entidade = new Atividade();
+        entidade.setNome(dto.getNome());
+        entidade.setDescricao(dto.getDescricao());
+
+        entidade= repository.save(entidade);
+
+        return new AtividadeDTO(entidade);
+    }
+
 }

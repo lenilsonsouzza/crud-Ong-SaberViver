@@ -12,7 +12,7 @@ public class AtividadeDTO {
 
 
 
-    public AtividadeDTO(Aluno x){
+    public AtividadeDTO(){
 
     }
 

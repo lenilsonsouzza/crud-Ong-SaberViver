@@ -1,32 +1,43 @@
 package saberViver.com.appSaberviver.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saberViver.com.appSaberviver.dto.AlunoDTO;
-import saberViver.com.appSaberviver.dto.AtividadeDTO;
 import saberViver.com.appSaberviver.servicos.AlunoServico;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/alunos")
+@RequiredArgsConstructor
 public class AlunoController {
 
 
-    @Autowired
-    private AlunoServico servico;
+
+    private final AlunoServico alunoServico;
+
 
     @GetMapping(value = "/{id}")
-    public AlunoDTO findById(@PathVariable Long id) {
-        return servico.findById(id);
+    public ResponseEntity<AlunoDTO> findById(@PathVariable Long id) {
+       AlunoDTO dto = alunoServico.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
-    public Page<AlunoDTO> findAll(Pageable pageable) {
-        return servico.findALL(pageable);
+    public ResponseEntity<Page<AlunoDTO>> findAll(Pageable pageable) {
+      Page<AlunoDTO> dto = alunoServico.findALL(pageable);
+               return  ResponseEntity.ok(dto);
+    }
 
+    @PostMapping
+    public ResponseEntity<AlunoDTO> inserir(@RequestBody AlunoDTO dto) {
+        dto = alunoServico.inserir(dto);
+        URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+            return ResponseEntity.created(uri).body(dto);
     }
 }
