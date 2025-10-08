@@ -5,7 +5,7 @@ import jakarta.persistence.MappedSuperclass;
 
 import java.time.LocalDate;
 @MappedSuperclass
-public class  Usuario {
+public abstract class  Usuario {
         private String nome;
         @Column(unique = true)
         private String senha;

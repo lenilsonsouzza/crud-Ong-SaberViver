@@ -22,7 +22,7 @@ public class Atividade {
 
 
     @ManyToMany(mappedBy = "atividades")
-    private List<Professor> professores = new ArrayList<>();
+    private List<Voluntario> professores = new ArrayList<>();
 
     public Atividade() {
 
@@ -34,7 +34,7 @@ public class Atividade {
         this.descricao = descricao;
     }
 
-    public List<Professor> getProfessores() {
+    public List<Voluntario> getProfessores() {
         return professores;
     }
 

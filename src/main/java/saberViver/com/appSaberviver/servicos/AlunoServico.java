@@ -30,9 +30,9 @@ public class AlunoServico {
     }
 
     @Transactional(readOnly = true)
-    public Page<AlunoDTO> findALL(Pageable pageable) {
+    public Page<AlunoDTO> findALL(Pageable page) {
 
-        Page<Aluno> result = alunoRepositorio.findAll(pageable);
+        Page<Aluno> result = alunoRepositorio.findAll(page);
         return result.map(x -> new AlunoDTO(x));
 
     }
@@ -40,14 +40,11 @@ public class AlunoServico {
     @Transactional
     public AlunoDTO inserir(AlunoDTO dto) {
         Aluno entidade = new Aluno();
-       copiarAlunoDTOparaEntidade(dto,entidade);
 
-        if (dto.getAtividade() != null && !dto.getAtividade().isEmpty()) {
-            List<Atividade> atividades = atividadeRepositorio.findAllById(dto.getAtividade());
-            entidade.getAtividades().addAll(atividades);
-        }
+        copiarAlunoDTOparaEntidade(dto,entidade);
 
         entidade = alunoRepositorio.save(entidade);
+
         return new AlunoDTO(entidade);
 
 

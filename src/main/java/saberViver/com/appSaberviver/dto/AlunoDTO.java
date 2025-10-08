@@ -42,7 +42,6 @@ public class AlunoDTO {
         dataNascimento = entidade.getDataNascimento();
         cpfResponsavel = entidade.getCpfResponsavel();
         telefonePrincipal = entidade.getTelefonePrincipal();
-        //atividade = entidade.getAtividades().stream().map(AtividadeDTO::new).toList();
         this.atividade = entidade.getAtividades()
                 .stream()
                 .map(Atividade::getId)

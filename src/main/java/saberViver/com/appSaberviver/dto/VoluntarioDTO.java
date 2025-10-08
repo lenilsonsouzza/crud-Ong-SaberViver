@@ -1,13 +1,13 @@
 package saberViver.com.appSaberviver.dto;
 
 import saberViver.com.appSaberviver.entidades.Atividade;
-import saberViver.com.appSaberviver.entidades.Professor;
+import saberViver.com.appSaberviver.entidades.Voluntario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorDTO {
+public class VoluntarioDTO {
 
     private String nome;
     private String senha;
@@ -22,7 +22,7 @@ public class ProfessorDTO {
 
 
 
-    public ProfessorDTO(Professor entidade) {
+    public VoluntarioDTO(Voluntario entidade) {
         id = entidade.getId();
         nome = entidade.getNome();
         cpf = entidade.getCpf();
@@ -40,13 +40,13 @@ public class ProfessorDTO {
     }
 
 
-    public ProfessorDTO() {
+    public VoluntarioDTO() {
 
     }
 
 
 
-    public ProfessorDTO(String nome, String senha, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
+    public VoluntarioDTO(String nome, String senha, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
         this.nome = nome;
         this.senha = senha;
         this.cpf = cpf;

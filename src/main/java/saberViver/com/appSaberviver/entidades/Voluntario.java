@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_professor")
-public class Professor extends Usuario {
+public class Voluntario extends Usuario {
 
 
     @Id
@@ -28,12 +28,12 @@ public class Professor extends Usuario {
     )
     private List<Atividade> atividades = new ArrayList<>();
 
-    public Professor() {
+    public Voluntario() {
 
     }
 
-    public Professor(String nome, String senha, String cpf, LocalDate dataNascimento, String telefone, long id,
-                     String areaAtuacao, String email, String turma) {
+    public Voluntario(String nome, String senha, String cpf, LocalDate dataNascimento, String telefone, long id,
+                      String areaAtuacao, String email, String turma) {
         super(nome, senha, cpf, dataNascimento, telefone);
         this.Id = id;
         this.areaAtuacao = areaAtuacao;
