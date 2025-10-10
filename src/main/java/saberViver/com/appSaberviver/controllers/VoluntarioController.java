@@ -1,6 +1,7 @@
 package saberViver.com.appSaberviver.controllers;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/professores")
+@RequestMapping(value = "/voluntarios")
 public class VoluntarioController {
 
 
@@ -33,7 +34,7 @@ public class VoluntarioController {
     }
 
     @PostMapping
-    public ResponseEntity<VoluntarioDTO> inserir(@RequestBody VoluntarioDTO dto) {
+    public ResponseEntity<VoluntarioDTO> inserir(@Valid  @RequestBody VoluntarioDTO dto) {
         dto = professorServico.inserir(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();

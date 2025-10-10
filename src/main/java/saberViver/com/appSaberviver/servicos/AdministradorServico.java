@@ -1,6 +1,7 @@
 package saberViver.com.appSaberviver.servicos;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
 import saberViver.com.appSaberviver.entidades.Administrador;
 import saberViver.com.appSaberviver.repositories.AdministradorRepositorio;
+import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
 
 
 @RequiredArgsConstructor
@@ -20,7 +22,8 @@ public class AdministradorServico {
 
     @Transactional(readOnly = true)
     public AdministradorDTO findyById(long id) {
-        Administrador administrador = administradorRepositorio.findById((id)).get();
+        Administrador administrador = administradorRepositorio.findById((id))
+                .orElseThrow(()->new ResourceNotFoundException("Administrador não encontrado"));
         return new AdministradorDTO(administrador);
     }
 
@@ -56,19 +59,24 @@ public class AdministradorServico {
 
     @Transactional
     public AdministradorDTO atualizar(Long id, AdministradorDTO dto) {
-        Administrador entidade = administradorRepositorio.getReferenceById(id);
+        try {
 
-        copiarAdministradorDTOParaEntidade(dto, entidade);
 
-        entidade = administradorRepositorio.save(entidade);
-        return new AdministradorDTO(entidade);
+            Administrador entidade = administradorRepositorio.getReferenceById(id);
 
+            copiarAdministradorDTOParaEntidade(dto, entidade);
+
+            entidade = administradorRepositorio.save(entidade);
+            return new AdministradorDTO(entidade);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Administrador não encontrado");
+        }
 
     }
 
     public void deletar(Long id) {
         Administrador administrador = administradorRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Administrador não encontrado"));
 
         administradorRepositorio.delete(administrador);
     }

@@ -1,6 +1,7 @@
 package saberViver.com.appSaberviver.controllers;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
+import saberViver.com.appSaberviver.dto.AlunoDTO;
 import saberViver.com.appSaberviver.servicos.AdministradorServico;
 
 import java.net.URI;
@@ -33,10 +35,26 @@ public class AdministradorController {
             return  ResponseEntity.ok(dto);
         }
     @PostMapping
-    public ResponseEntity<AdministradorDTO> inserir(@RequestBody AdministradorDTO dto) {
+    public ResponseEntity<AdministradorDTO> inserir(@Valid  @RequestBody AdministradorDTO dto) {
         dto = administradorServico.inserir(dto);
         URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
+
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AdministradorDTO> atualizar(@PathVariable long id, @RequestBody AdministradorDTO dto) {
+        dto = administradorServico.atualizar(id,dto);
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        administradorServico.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }

@@ -17,12 +17,11 @@ public class Atividade {
     private String descricao;
 
 
-    @ManyToMany(mappedBy = "atividades")
+    @ManyToMany(mappedBy = "atividades",cascade = CascadeType.REMOVE )
     private List<Aluno> alunos = new ArrayList<>();
 
-
-    @ManyToMany(mappedBy = "atividades")
-    private List<Voluntario> professores = new ArrayList<>();
+    @ManyToMany(mappedBy = "atividades", cascade = CascadeType.REMOVE)
+    private List<Voluntario> voluntarios = new ArrayList<>();
 
     public Atividade() {
 
@@ -34,8 +33,8 @@ public class Atividade {
         this.descricao = descricao;
     }
 
-    public List<Voluntario> getProfessores() {
-        return professores;
+    public List<Voluntario> getVoluntarios() {
+        return voluntarios;
     }
 
     public List<Aluno> getAlunos() {

@@ -1,6 +1,7 @@
 package saberViver.com.appSaberviver.controllers;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class AtividadeController {
     }
 
     @PostMapping
-    public ResponseEntity<AtividadeDTO> inserir(@RequestBody AtividadeDTO dto) {
+    public ResponseEntity<AtividadeDTO> inserir(@Valid  @RequestBody AtividadeDTO dto) {
         dto = atividadeServico.inserir(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();

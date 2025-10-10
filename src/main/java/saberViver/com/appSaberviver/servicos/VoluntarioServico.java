@@ -1,5 +1,6 @@
 package saberViver.com.appSaberviver.servicos;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.repositories.AtividadeRepositorio;
 import saberViver.com.appSaberviver.repositories.VoluntarioRepositorio;
+import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -18,19 +20,19 @@ import java.util.List;
 public class VoluntarioServico {
 
 
-    private final VoluntarioRepositorio professorRepositorio;
+    private final VoluntarioRepositorio voluntarioRepositorio;
     private final AtividadeRepositorio atividadeRepositorio;
 
     @Transactional(readOnly = true)
     public VoluntarioDTO findById(Long id) {
-        Voluntario professor = professorRepositorio.findById(id).get();
+        Voluntario professor = voluntarioRepositorio.findById(id).orElseThrow(()->new ResourceNotFoundException("Recurso não encontrado"));
         return new VoluntarioDTO(professor);
     }
 
     @Transactional(readOnly = true)
     public Page<VoluntarioDTO> findALL(Pageable pageable) {
 
-        Page<Voluntario> result = professorRepositorio.findAll(pageable);
+        Page<Voluntario> result = voluntarioRepositorio.findAll(pageable);
         return result.map(x -> new VoluntarioDTO(x));
     }
 
@@ -39,26 +41,31 @@ public class VoluntarioServico {
         Voluntario entidade = new Voluntario();
         copiarDtoparaEntidade(dto, entidade);
 
-        entidade = professorRepositorio.save(entidade);
+        entidade = voluntarioRepositorio.save(entidade);
         return new VoluntarioDTO(entidade);
 
     }
     @Transactional
     public VoluntarioDTO atualizar(long id, VoluntarioDTO dto) {
-        Voluntario entidade = professorRepositorio.getReferenceById(id);
+        try {
 
-        copiarDtoparaEntidade(dto, entidade);
 
-        entidade = professorRepositorio.save(entidade);
-        return new VoluntarioDTO(entidade);
+            Voluntario entidade = voluntarioRepositorio.getReferenceById(id);
 
+            copiarDtoparaEntidade(dto, entidade);
+
+            entidade = voluntarioRepositorio.save(entidade);
+            return new VoluntarioDTO(entidade);
+        }catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Voluntario não encontrado");
+        }
     }
 
     public void deletar(Long id) {
-        Voluntario professor = professorRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("professor não encontrado"));
+        Voluntario professor = voluntarioRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Voluntario não encontrado"));
 
-        professorRepositorio.delete(professor);
+       voluntarioRepositorio.delete(professor);
     }
 
     private void copiarDtoparaEntidade(VoluntarioDTO dto, Voluntario entidade) {

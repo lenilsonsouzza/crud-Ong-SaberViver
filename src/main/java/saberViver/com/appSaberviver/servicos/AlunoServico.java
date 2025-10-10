@@ -1,5 +1,6 @@
 package saberViver.com.appSaberviver.servicos;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.repositories.AlunoRepositorio;
 import saberViver.com.appSaberviver.repositories.AtividadeRepositorio;
+import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class AlunoServico {
 
     @Transactional(readOnly = true)
     public AlunoDTO findById(Long id) {
-        Aluno aluno = alunoRepositorio.findById(id).get();
+        Aluno aluno = alunoRepositorio.findById(id).orElseThrow(()->new ResourceNotFoundException("Recurso não encontrado"));
         return new AlunoDTO(aluno);
 
     }
@@ -51,18 +53,23 @@ public class AlunoServico {
     }
     @Transactional
     public AlunoDTO atualizar(Long id,AlunoDTO dto) {
-        Aluno entidade = alunoRepositorio.getReferenceById(id);
+        try {
 
-        copiarAlunoDTOparaEntidade(dto,entidade);
 
-        entidade = alunoRepositorio.save(entidade);
-        return new AlunoDTO(entidade);
+            Aluno entidade = alunoRepositorio.getReferenceById(id);
 
+            copiarAlunoDTOparaEntidade(dto, entidade);
+
+            entidade = alunoRepositorio.save(entidade);
+            return new AlunoDTO(entidade);
+        }catch (EntityNotFoundException e){
+            throw  new ResourceNotFoundException(" recurso não encontrado");
+        }
 
     }
     public void deletar(Long id) {
-        Aluno aluno = alunoRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+
+        Aluno aluno = alunoRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrada"));
 
         alunoRepositorio.delete(aluno);
     }
@@ -78,6 +85,7 @@ public class AlunoServico {
         entidade.setNomeResponsavel(dto.getNomeResponsavel());
         entidade.setCpfResponsavel(dto.getCpfResponsavel());
         entidade.setTelefonePrincipal(dto.getTelefonePrincipal());
+        entidade.setTermoAutorizado((dto.isTermoAutorizado()));
 
         if (dto.getAtividade() != null && !dto.getAtividade().isEmpty()) {
             List<Atividade> atividades = atividadeRepositorio.findAllById(dto.getAtividade());

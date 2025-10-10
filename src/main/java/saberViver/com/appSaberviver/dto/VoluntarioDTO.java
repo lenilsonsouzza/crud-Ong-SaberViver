@@ -1,21 +1,33 @@
 package saberViver.com.appSaberviver.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.NoArgsConstructor;
 import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@NoArgsConstructor
 public class VoluntarioDTO {
-
+    @NotBlank(message = "O nome é obrigatorio")
     private String nome;
+    @NotBlank(message = "a senha é obrigatorio")
+    @Size(min = 6,max = 8, message = "A senha deve ter no mínimo 6 caracteres.")
     private String senha;
+    @NotBlank(message = "O Cpf é obrigatorio")
+    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos.")
     private String cpf;
+    @NotNull
     private LocalDate dataNascimento;
     private long id;
+    @NotBlank(message = "a area de atuação é obrigatorio")
     private String areaAtuacao;
+    @NotBlank(message = " email é obrigatorio")
+    @Email(message = "E-mail inválido.")
     private String email;
+    @Pattern(regexp = "\\d{10,11}", message = "O telefone deve ter 10 ou 11 dígitos.")
+    @NotBlank(message = "O telefone é obrigatorio")
     private String telefonePricipal;
     private List<Long> atividade = new ArrayList<Long>();
     private String turma;
@@ -38,13 +50,6 @@ public class VoluntarioDTO {
                 .toList();
 
     }
-
-
-    public VoluntarioDTO() {
-
-    }
-
-
 
     public VoluntarioDTO(String nome, String senha, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
         this.nome = nome;

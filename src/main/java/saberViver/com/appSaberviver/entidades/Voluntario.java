@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_professor")
+@Table(name = "tb_voluntario")
 public class Voluntario extends Usuario {
 
 
@@ -22,8 +22,8 @@ public class Voluntario extends Usuario {
 
     @ManyToMany
     @JoinTable(
-            name = "tb_professor_atividade", // tabela intermediária
-            joinColumns = @JoinColumn(name = "professor_id"), // FK colaborador
+            name = "tb_voluntario_atividade", // tabela intermediária
+            joinColumns = @JoinColumn(name = "voluntario_id"), // FK colaborador
             inverseJoinColumns = @JoinColumn(name = "atividade_id") // FK atividade
     )
     private List<Atividade> atividades = new ArrayList<>();
@@ -41,13 +41,6 @@ public class Voluntario extends Usuario {
         this.turma = turma;
     }
 
-    @PreRemove
-    private void removerRelacionamentos() {
-        for (Atividade atividade : atividades) {
-            atividade.getAlunos().remove(this);
-        }
-        atividades.clear();
-    }
 
     public void setEmail(String email) {
         this.email = email;

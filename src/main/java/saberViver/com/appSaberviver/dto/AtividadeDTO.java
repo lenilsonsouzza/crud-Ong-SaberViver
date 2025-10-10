@@ -1,20 +1,19 @@
 package saberViver.com.appSaberviver.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.Atividade;
-
+@NoArgsConstructor
 public class AtividadeDTO {
     private long Id;
+    @NotBlank
     private String nome;
     private String descricao;
 
 
 
-
-    public AtividadeDTO(){
-
-    }
 
 public AtividadeDTO(Atividade entidade){
         Id=entidade.getId();

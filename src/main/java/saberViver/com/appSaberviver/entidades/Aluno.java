@@ -10,22 +10,6 @@ import java.util.List;
 @Table(name = "tb_aluno")
 public class Aluno  {
 
-    @Override
-    public String toString() {
-        return "Aluno{" +
-                "Id=" + Id +
-                ", nome='" + nome + '\'' +
-                ", apelido='" + apelido + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", nomeResponsavel='" + nomeResponsavel + '\'' +
-                ", cpfResponsavel='" + cpfResponsavel + '\'' +
-                ", telefonePrincipal='" + telefonePrincipal + '\'' +
-                ", telefoneOpcional='" + telefoneOpcional + '\'' +
-                ", atividades=" + atividades +
-                '}';
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long Id;
@@ -37,6 +21,9 @@ public class Aluno  {
     private String cpfResponsavel;
     private String telefonePrincipal;
     private String telefoneOpcional;
+    private boolean termoAutorizado;
+
+
     @ManyToMany
     @JoinTable(
             name = "tb_aluno_atividade", // tabela intermediária
@@ -46,7 +33,7 @@ public class Aluno  {
     private List<Atividade> atividades = new ArrayList<>();
 
     public Aluno(long id, String nome, String apelido, String cpf, LocalDate dataNascimento, String nomeResponsavel,
-                 String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Atividade> atividades) {
+                 String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Atividade> atividades,boolean termoAutorizado) {
         Id = id;
         this.nome = nome;
         this.apelido = apelido;
@@ -57,6 +44,8 @@ public class Aluno  {
         this.telefonePrincipal = telefonePrincipal;
         this.telefoneOpcional = telefoneOpcional;
         this.atividades = atividades;
+        this.termoAutorizado=termoAutorizado;
+
     }
 
     @PreRemove
@@ -65,6 +54,14 @@ public class Aluno  {
             atividade.getAlunos().remove(this);
         }
         atividades.clear();
+    }
+
+    public boolean isTermoAutorizado() {
+        return termoAutorizado;
+    }
+
+    public void setTermoAutorizado(boolean termoAutorizado) {
+        this.termoAutorizado = termoAutorizado;
     }
 
     public long getId() {

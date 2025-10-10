@@ -1,5 +1,6 @@
 package saberViver.com.appSaberviver.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<AlunoDTO> inserir(@RequestBody AlunoDTO dto) {
+    public ResponseEntity<AlunoDTO> inserir(@Valid @RequestBody AlunoDTO dto) {
         dto = alunoServico.inserir(dto);
         URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();

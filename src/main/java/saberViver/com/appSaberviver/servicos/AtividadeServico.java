@@ -1,5 +1,7 @@
 package saberViver.com.appSaberviver.servicos;
 
+import jakarta.persistence.EntityNotFoundException;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import saberViver.com.appSaberviver.dto.AtividadeDTO;
 import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.repositories.AtividadeRepositorio;
 import org.springframework.data.domain.Page;
+import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
 
 @Service
 public class AtividadeServico {
@@ -18,7 +21,7 @@ public class AtividadeServico {
     @Transactional(readOnly = true)
     public AtividadeDTO findById(Long id) {
 
-        Atividade atividade = atividadeRepositorio.findById(id).get();
+        Atividade atividade = atividadeRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Atividade não encontrada"));
         return new AtividadeDTO(atividade);
     }
 
@@ -42,20 +45,26 @@ public class AtividadeServico {
 
     @Transactional
     public AtividadeDTO atualizar(long id, AtividadeDTO dto) {
-        Atividade entidade = atividadeRepositorio.getReferenceById(id);
+try {
+    Atividade entidade = atividadeRepositorio.getReferenceById(id);
 
-        copiarDtoPentidade(dto, entidade);
+    copiarDtoPentidade(dto, entidade);
 
-        entidade = atividadeRepositorio.save(entidade);
+    entidade = atividadeRepositorio.save(entidade);
 
-        return new AtividadeDTO(entidade);
+    return new AtividadeDTO(entidade);
+}catch (EntityNotFoundException e){
+    throw  new ResourceNotFoundException(" Atividade não encontrada");
+}
     }
 
     @Transactional
     public void delete(Long id) {
-       atividadeRepositorio.deleteById(id);
-    }
 
+            Atividade atividade = atividadeRepositorio.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Atividade não encontrada"));
+
+    }
     private void copiarDtoPentidade(AtividadeDTO dto, Atividade entidade) {
         entidade.setNome(dto.getNome());
         entidade.setDescricao(dto.getDescricao());
