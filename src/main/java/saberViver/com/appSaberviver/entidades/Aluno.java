@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_aluno")
-public class Aluno  {
+public class Aluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Aluno  {
     private List<Atividade> atividades = new ArrayList<>();
 
     public Aluno(long id, String nome, String apelido, String cpf, LocalDate dataNascimento, String nomeResponsavel,
-                 String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Atividade> atividades,boolean termoAutorizado) {
+                 String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Atividade> atividades, boolean termoAutorizado) {
         Id = id;
         this.nome = nome;
         this.apelido = apelido;
@@ -44,8 +44,7 @@ public class Aluno  {
         this.telefonePrincipal = telefonePrincipal;
         this.telefoneOpcional = telefoneOpcional;
         this.atividades = atividades;
-        this.termoAutorizado=termoAutorizado;
-
+        this.termoAutorizado = termoAutorizado;
     }
 
     @PreRemove

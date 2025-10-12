@@ -2,30 +2,33 @@ package saberViver.com.appSaberviver.entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import saberViver.com.appSaberviver.entidades.user.User;
 
 import java.time.LocalDate;
+
 @MappedSuperclass
 public abstract class  Usuario {
-        private String nome;
-        @Column(unique = true)
-        private String senha;
+    private String nome;
+    @Column(unique = true)
+    private String senha;
     @Column(unique = true)
     private String cpf;
     private LocalDate dataNascimento;
     private String telefone;
 
 
-    public Usuario(){
+    public Usuario() {
 
     }
 
 
-    public Usuario( String nome, String senha, String cpf, LocalDate dataNascimento,String telefone) {
+    public Usuario(String nome, String senha, String cpf, LocalDate dataNascimento, String telefone) {
         this.nome = nome;
         this.senha = senha;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
-        this.telefone=telefone;
+        this.telefone = telefone;
+
 
     }
 

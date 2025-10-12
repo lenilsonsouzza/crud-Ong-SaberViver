@@ -71,11 +71,11 @@ public class VoluntarioServico {
     private void copiarDtoparaEntidade(VoluntarioDTO dto, Voluntario entidade) {
         entidade.setNome(dto.getNome());
         entidade.setCpf(dto.getCpf());
+        entidade.setSenha(dto.getSenha());
         entidade.setEmail(dto.getEmail());
         entidade.setDataNascimento(dto.getDataNascimento());
         entidade.setAreaAtuacao(dto.getAreaAtuacao());
-        entidade.setSenha(dto.getSenha());
-        entidade.setTelefone(dto.getTelefonePricipal());
+        entidade.setTelefone(dto.getTelefone());
 
 
         if (dto.getAtividade() != null && !dto.getAtividade().isEmpty()) {

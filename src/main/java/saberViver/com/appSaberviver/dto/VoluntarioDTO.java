@@ -28,7 +28,7 @@ public class VoluntarioDTO {
     private String email;
     @Pattern(regexp = "\\d{10,11}", message = "O telefone deve ter 10 ou 11 dígitos.")
     @NotBlank(message = "O telefone é obrigatorio")
-    private String telefonePricipal;
+    private String telefone;
     private List<Long> atividade = new ArrayList<Long>();
     private String turma;
 
@@ -42,7 +42,7 @@ public class VoluntarioDTO {
         email = entidade.getEmail();
         areaAtuacao = entidade.getAreaAtuacao();
         turma=entidade.getTurma();
-        telefonePricipal=entidade.getTelefone();
+        telefone=entidade.getTelefone();
 
         this.atividade = entidade.getAtividades()
                 .stream()
@@ -61,12 +61,12 @@ public class VoluntarioDTO {
         this.email = email;
         this.turma=turma;
     }
-    public String getTelefonePricipal() {
-        return telefonePricipal;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setTelefonePricipal(String telefonePricipal) {
-        this.telefonePricipal = telefonePricipal;
+    public void setTelefone(String telefonePricipal) {
+        this.telefone = telefonePricipal;
     }
 
     public String getTurma() {
