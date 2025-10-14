@@ -45,26 +45,28 @@ public class AtividadeServico {
 
     @Transactional
     public AtividadeDTO atualizar(long id, AtividadeDTO dto) {
-try {
-    Atividade entidade = atividadeRepositorio.getReferenceById(id);
+        try {
+            Atividade entidade = atividadeRepositorio.getReferenceById(id);
 
-    copiarDtoPentidade(dto, entidade);
+            copiarDtoPentidade(dto, entidade);
 
-    entidade = atividadeRepositorio.save(entidade);
+            entidade = atividadeRepositorio.save(entidade);
 
-    return new AtividadeDTO(entidade);
-}catch (EntityNotFoundException e){
-    throw  new ResourceNotFoundException(" Atividade não encontrada");
-}
+            return new AtividadeDTO(entidade);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(" Atividade não encontrada");
+        }
     }
 
     @Transactional
     public void delete(Long id) {
 
-            Atividade atividade = atividadeRepositorio.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Atividade não encontrada"));
+        Atividade atividade = atividadeRepositorio.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Atividade não encontrada"));
 
+        atividadeRepositorio.delete(atividade);
     }
+
     private void copiarDtoPentidade(AtividadeDTO dto, Atividade entidade) {
         entidade.setNome(dto.getNome());
         entidade.setDescricao(dto.getDescricao());

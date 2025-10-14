@@ -2,10 +2,15 @@ package saberViver.com.appSaberviver.dto;
 
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.Atividade;
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class AtividadeDTO {
     private long Id;
     @NotBlank
@@ -20,21 +25,5 @@ public AtividadeDTO(Atividade entidade){
         nome=entidade.getNome();
         descricao=entidade.getDescricao();
 }
-    public AtividadeDTO(long id, String nome, String descricao) {
-        Id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-    }
 
-    public long getId() {
-        return Id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
 }

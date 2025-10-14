@@ -22,16 +22,28 @@ public class AlunoController {
     private final AlunoServico alunoServico;
 
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<AlunoDTO> findById(@PathVariable Long id) {
-       AlunoDTO dto = alunoServico.findById(id);
+    @GetMapping(value = "/cpf/{cpf}")
+    public ResponseEntity<AlunoDTO> findByCpf(@PathVariable String cpf) {
+       AlunoDTO dto = alunoServico.findBycpf(cpf);
         return ResponseEntity.ok(dto);
     }
-
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity<AlunoDTO> findByNome(@PathVariable String nome) {
+        AlunoDTO dto = alunoServico.findByNome(nome);
+        return ResponseEntity.ok(dto);
+    }
     @GetMapping
     public ResponseEntity<Page<AlunoDTO>> findAll(Pageable pageable) {
       Page<AlunoDTO> dto = alunoServico.findALL(pageable);
                return  ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/publico")
+    public ResponseEntity<AlunoDTO> inserirPublico(@Valid @RequestBody AlunoDTO dto) {
+        dto = alunoServico.inserir(dto);
+        URI uri= ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PostMapping

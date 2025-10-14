@@ -1,6 +1,6 @@
 package saberViver.com.appSaberviver.entidades.user;
 
-public enum Roles {
+public enum Role {
 
 
     ALUNO("ALUNO"),
@@ -9,7 +9,7 @@ public enum Roles {
     ADM_MASTER("ADM_MASTER");
     private String roler;
 
-    Roles(String roler) {
+    Role(String roler) {
         this.roler = roler;
     }
 

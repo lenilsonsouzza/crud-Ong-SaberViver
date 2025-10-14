@@ -30,6 +30,12 @@ public class AtividadeController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/publico")
+    public ResponseEntity<Page<AtividadeDTO>> findAllPublico(Pageable pageable) {
+        Page<AtividadeDTO> dto = atividadeServico.findALL(pageable);
+        return ResponseEntity.ok(dto);
+    }
+
     @GetMapping
     public ResponseEntity<Page<AtividadeDTO>> findAll(Pageable pageable) {
         Page<AtividadeDTO> dto = atividadeServico.findALL(pageable);

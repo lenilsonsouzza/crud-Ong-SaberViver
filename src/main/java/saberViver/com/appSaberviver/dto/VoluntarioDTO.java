@@ -12,9 +12,7 @@ import java.util.List;
 public class VoluntarioDTO {
     @NotBlank(message = "O nome é obrigatorio")
     private String nome;
-    @NotBlank(message = "a senha é obrigatorio")
-    @Size(min = 6,max = 8, message = "A senha deve ter no mínimo 6 caracteres.")
-    private String senha;
+    private String sobreNome;
     @NotBlank(message = "O Cpf é obrigatorio")
     @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos.")
     private String cpf;
@@ -37,6 +35,7 @@ public class VoluntarioDTO {
     public VoluntarioDTO(Voluntario entidade) {
         id = entidade.getId();
         nome = entidade.getNome();
+        sobreNome=entidade.getSobreNome();
         cpf = entidade.getCpf();
         dataNascimento = entidade.getDataNascimento();
         email = entidade.getEmail();
@@ -51,16 +50,25 @@ public class VoluntarioDTO {
 
     }
 
-    public VoluntarioDTO(String nome, String senha, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
+    public VoluntarioDTO(String nome, String cpf, LocalDate dataNascimento, long id, String areaAtuacao, String email, String turma) {
         this.nome = nome;
-        this.senha = senha;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.id = id;
         this.areaAtuacao = areaAtuacao;
         this.email = email;
         this.turma=turma;
+
     }
+
+    public String getSobreNome() {
+        return sobreNome;
+    }
+
+    public void setSobreNome(String sobreNome) {
+        this.sobreNome = sobreNome;
+    }
+
     public String getTelefone() {
         return telefone;
     }
@@ -91,14 +99,6 @@ public class VoluntarioDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getCpf() {

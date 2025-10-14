@@ -25,8 +25,15 @@ public class AlunoServico {
     private final AtividadeRepositorio atividadeRepositorio;
 
     @Transactional(readOnly = true)
-    public AlunoDTO findById(Long id) {
-        Aluno aluno = alunoRepositorio.findById(id).orElseThrow(()->new ResourceNotFoundException("Recurso não encontrado"));
+    public AlunoDTO findBycpf(String cpf) {
+        Aluno aluno = alunoRepositorio.findByCpf(cpf).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+        return new AlunoDTO(aluno);
+
+    }
+
+    @Transactional(readOnly = true)
+    public AlunoDTO findByNome(String nome) {
+        Aluno aluno = alunoRepositorio.findByNome(nome).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
         return new AlunoDTO(aluno);
 
     }
@@ -43,7 +50,7 @@ public class AlunoServico {
     public AlunoDTO inserir(AlunoDTO dto) {
         Aluno entidade = new Aluno();
 
-        copiarAlunoDTOparaEntidade(dto,entidade);
+        copiarAlunoDTOparaEntidade(dto, entidade);
 
         entidade = alunoRepositorio.save(entidade);
 
@@ -51,8 +58,9 @@ public class AlunoServico {
 
 
     }
+
     @Transactional
-    public AlunoDTO atualizar(Long id,AlunoDTO dto) {
+    public AlunoDTO atualizar(Long id, AlunoDTO dto) {
         try {
 
 
@@ -62,11 +70,13 @@ public class AlunoServico {
 
             entidade = alunoRepositorio.save(entidade);
             return new AlunoDTO(entidade);
-        }catch (EntityNotFoundException e){
-            throw  new ResourceNotFoundException(" recurso não encontrado");
+
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(" recurso não encontrado");
         }
 
     }
+
     public void deletar(Long id) {
 
         Aluno aluno = alunoRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Aluno não encontrada"));
@@ -74,11 +84,10 @@ public class AlunoServico {
         alunoRepositorio.delete(aluno);
     }
 
-
-
     private void copiarAlunoDTOparaEntidade(AlunoDTO dto, Aluno entidade) {
 
         entidade.setNome(dto.getNome());
+        entidade.setSobreNome(dto.getSobreNome());
         entidade.setCpf(dto.getCpf());
         entidade.setApelido(dto.getApelido());
         entidade.setDataNascimento(dto.getDataNascimento());
@@ -86,6 +95,7 @@ public class AlunoServico {
         entidade.setCpfResponsavel(dto.getCpfResponsavel());
         entidade.setTelefonePrincipal(dto.getTelefonePrincipal());
         entidade.setTermoAutorizado((dto.isTermoAutorizado()));
+
 
         if (dto.getAtividade() != null && !dto.getAtividade().isEmpty()) {
             List<Atividade> atividades = atividadeRepositorio.findAllById(dto.getAtividade());

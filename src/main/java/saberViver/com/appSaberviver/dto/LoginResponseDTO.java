@@ -1,4 +1,4 @@
 package saberViver.com.appSaberviver.dto;
 
-public record LoginResponseDTO() {
+public record LoginResponseDTO(String token) {
 }

@@ -1,10 +1,18 @@
 package saberViver.com.appSaberviver.entidades;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tb_atividade")
 public class Atividade {
@@ -17,59 +25,28 @@ public class Atividade {
     private String descricao;
 
 
-    @ManyToMany(mappedBy = "atividades",cascade = CascadeType.REMOVE )
+    @ManyToMany(mappedBy = "atividades")
     private List<Aluno> alunos = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "atividades", cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "atividades")
     private List<Voluntario> voluntarios = new ArrayList<>();
 
-    public Atividade() {
 
-    }
 
-    public Atividade(long id, String nome, String descricao) {
-        this.Id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-    }
 
-    public List<Voluntario> getVoluntarios() {
-        return voluntarios;
-    }
+    @PreRemove
+    public void preRemove() {
+        for (Aluno aluno : new ArrayList<>(alunos)) {
+            aluno.getAtividades().remove(this);
+        }
+        alunos.clear();
 
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
-
-    @Override
-    public String toString() {
-        return "Atividade{" +
-                "Id=" + Id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                '}';
-    }
-
-    public long getId() {
-        return Id;
+        for (Voluntario voluntario : new ArrayList<>(voluntarios)) {
+            voluntario.getAtividades().remove(this);
+        }
+        voluntarios.clear();
     }
 
 
-    public String getNome() {
-        return nome;
-    }
 
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
 }

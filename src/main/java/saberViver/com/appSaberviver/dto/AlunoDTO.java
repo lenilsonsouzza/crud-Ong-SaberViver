@@ -2,6 +2,10 @@ package saberViver.com.appSaberviver.dto;
 
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.Atividade;
 
@@ -9,11 +13,16 @@ import saberViver.com.appSaberviver.entidades.Atividade;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AlunoDTO {
+
     private long Id;
     @NotBlank(message = " O nome é Obrigatorio")
     private String nome;
+    private String sobreNome;
     private String apelido;
     private String cpf;
     @NotNull(message = "A data de nascimento é obrigatorio")
@@ -32,25 +41,11 @@ public class AlunoDTO {
     @AssertTrue(message = "É obrigatório autorizar o termo para concluir o cadastro.")
     private boolean termoAutorizado;
 
-public AlunoDTO(){
-
-}
-
-
-    public AlunoDTO(Long id, String nome, String nomeResponsavel, String telefonePrincipal) {
-        this.Id = id;
-        this.nome = nome;
-        this.nomeResponsavel = nomeResponsavel;
-        this.telefonePrincipal = telefonePrincipal;
-    }
-
-    public boolean isTermoAutorizado() {
-        return termoAutorizado;
-    }
 
     public AlunoDTO(Aluno entidade) {
         Id = entidade.getId();
         nome = entidade.getNome();
+        sobreNome=entidade.getSobreNome();
         cpf = entidade.getCpf();
         apelido = entidade.getApelido();
         nomeResponsavel = entidade.getNomeResponsavel();
@@ -61,17 +56,28 @@ public AlunoDTO(){
                 .stream()
                 .map(Atividade::getId)
                 .toList();
-termoAutorizado=entidade.isTermoAutorizado();
+        termoAutorizado = entidade.isTermoAutorizado();
     }
+
+
+    public AlunoDTO(Long id, String nome, String nomeResponsavel, String telefonePrincipal) {
+        this.Id = id;
+        this.nome = nome;
+        this.nomeResponsavel = nomeResponsavel;
+        this.telefonePrincipal = telefonePrincipal;
+    }
+
 
     public List<Long> getAtividade() {
         return atividade;
     }
 
-    public AlunoDTO(long id, String nome, String apelido, String cpf, LocalDate dataNascimento, String nomeResponsavel,
+
+    public AlunoDTO(long id, String nome, String sobreNome, String apelido, String cpf, LocalDate dataNascimento, String nomeResponsavel,
                     String cpfResponsavel, String telefonePrincipal, String telefoneOpcional, List<Long> atividade) {
         Id = id;
         this.nome = nome;
+        this.sobreNome = sobreNome;
         this.apelido = apelido;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -80,60 +86,6 @@ termoAutorizado=entidade.isTermoAutorizado();
         this.telefonePrincipal = telefonePrincipal;
         this.telefoneOpcional = telefoneOpcional;
         this.atividade = atividade;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
-    public String getApelido() {
-        return apelido;
-    }
-
-    public String getTelefonePrincipal() {
-        return telefonePrincipal;
-    }
-
-    public String getTelefoneOpcional() {
-        return telefoneOpcional;
-    }
-
-    public void setNomeResponsavel(String nomeResponsavel) {
-        this.nomeResponsavel = nomeResponsavel;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-
-    public long getId() {
-        return Id;
-    }
-
-    public String getNomeResponsavel() {
-        return nomeResponsavel;
-    }
-
-    public String getCpfResponsavel() {
-        return cpfResponsavel;
     }
 
 

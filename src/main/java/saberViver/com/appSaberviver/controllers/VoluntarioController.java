@@ -5,13 +5,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import saberViver.com.appSaberviver.dto.AdministradorDTO;
+import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
+import saberViver.com.appSaberviver.dto.CadastroVoluntarioDTO;
 import saberViver.com.appSaberviver.dto.VoluntarioDTO;
 import saberViver.com.appSaberviver.servicos.VoluntarioServico;
-
-import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,37 +20,40 @@ import java.net.URI;
 public class VoluntarioController {
 
 
-    private final VoluntarioServico professorServico;
+    private final VoluntarioServico voluntarioServico;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<VoluntarioDTO> findById(@PathVariable Long id) {
-        VoluntarioDTO dto = professorServico.findById(id);
+    @GetMapping(value = "/cpf/{cpf}")
+    public ResponseEntity<VoluntarioDTO> findByCpf(@PathVariable String cpf) {
+        VoluntarioDTO dto = voluntarioServico.findByCpf(cpf);
+        return ResponseEntity.ok(dto);
+    }
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity<VoluntarioDTO> findByNome(@PathVariable String nome) {
+        VoluntarioDTO dto = voluntarioServico.findByNome(nome);
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping
     public ResponseEntity<Page<VoluntarioDTO>> findAll(Pageable pageable) {
-        Page<VoluntarioDTO> dto = professorServico.findALL(pageable);
+        Page<VoluntarioDTO> dto = voluntarioServico.findALL(pageable);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<VoluntarioDTO> inserir(@Valid  @RequestBody VoluntarioDTO dto) {
-        dto = professorServico.inserir(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).body(dto);
+    public ResponseEntity<VoluntarioDTO> cadastrar(@RequestBody @Valid CadastroVoluntarioDTO dto) {
+        VoluntarioDTO criado = voluntarioServico.cadastrarVoluntario(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<VoluntarioDTO> atualizar(@PathVariable long id, @RequestBody VoluntarioDTO dto) {
-        dto = professorServico.atualizar(id, dto);
+        dto = voluntarioServico.atualizar(id, dto);
         return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        professorServico.deletar(id);
+        voluntarioServico.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }

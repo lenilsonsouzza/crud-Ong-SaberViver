@@ -21,12 +21,10 @@ public class AdministradorDTO {
     private long id;
     @NotBlank(message = "O nome é obrigatorio")
     private String nome;
+    private String sobreNome;
     @NotBlank(message = "O Cpf é obrigatorio")
     @Pattern(regexp = "\\d{11}", message = "O CPF deve conter 11 dígitos.")
     private String cpf;
-    @NotBlank(message = "a senha é obrigatorio")
-    @Size(min = 6,max = 8, message = "A senha deve ter no mínimo 6 caracteres.")
-    private String senha;
     @Pattern(regexp = "\\d{10,11}", message = "O telefone deve ter 10 ou 11 dígitos.")
     @NotBlank(message = "O telefone é obrigatorio")
     private String telefone;
@@ -41,8 +39,8 @@ public class AdministradorDTO {
     public AdministradorDTO(Administrador entidade) {
         id = entidade.getId();
         nome = entidade.getNome();
+        sobreNome=entidade.getSobreNome();
         cpf = entidade.getCpf();
-        senha = entidade.getSenha();
         telefone = entidade.getTelefone();
         areaAtuacao = entidade.getAreaAtuacao();
         email = entidade.getEmail();

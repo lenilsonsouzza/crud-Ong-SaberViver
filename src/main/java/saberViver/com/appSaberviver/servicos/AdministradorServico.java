@@ -5,11 +5,17 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
+import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
 import saberViver.com.appSaberviver.entidades.Administrador;
+import saberViver.com.appSaberviver.entidades.user.Role;
+import saberViver.com.appSaberviver.entidades.user.User;
 import saberViver.com.appSaberviver.repositories.AdministradorRepositorio;
+import saberViver.com.appSaberviver.repositories.UserRepositorio;
 import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
 
 
@@ -19,13 +25,21 @@ public class AdministradorServico {
 
 
     private final AdministradorRepositorio administradorRepositorio;
+    private final UserRepositorio userRepositorio;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public AdministradorDTO findyById(long id) {
-        Administrador administrador = administradorRepositorio.findById((id))
-                .orElseThrow(()->new ResourceNotFoundException("Administrador não encontrado"));
+    public AdministradorDTO findyByCpf(String cpf) {
+        Administrador administrador = administradorRepositorio.findByCpf((cpf)).orElseThrow(()->new ResourceNotFoundException("CPF não encontrado"));
         return new AdministradorDTO(administrador);
     }
+    @Transactional(readOnly = true)
+    public AdministradorDTO findyByNome(String nome) {
+        Administrador administrador = administradorRepositorio.findByNome((nome))
+                .orElseThrow(()->new ResourceNotFoundException("Nome não encontrado"));
+        return new AdministradorDTO(administrador);
+    }
+
 
     @Transactional(readOnly = true)
     public Page<AdministradorDTO> findALL(Pageable page) {
@@ -35,32 +49,42 @@ public class AdministradorServico {
     }
 
     @Transactional
-    public AdministradorDTO inserir(AdministradorDTO dto) {
-        Administrador entidade = new Administrador();
+    public AdministradorDTO cadastrarAdministrador(CadastroAdministradorDTO dto) {
 
-        copiarAdministradorDTOParaEntidade(dto, entidade);
+        if (userRepositorio.findBylogin(dto.getLogin()) != null) {
+            throw new IllegalArgumentException("Login já existente!");
+        }
 
-        entidade = administradorRepositorio.save(entidade);
+        User userLogado = SecurityContextHolderHelper.getUser();
 
-        return new AdministradorDTO(entidade);
+
+        if (userLogado.getRoler() != Role.ADM_MASTER) {
+            throw new AccessDeniedException("Apenas ADM_MASTER pode criar ADM");
+        }
+
+        User user = new User(dto.getLogin(), passwordEncoder.encode(dto.getSenha()), Role.ADM);
+        userRepositorio.save(user);
+
+        Administrador adm = new Administrador();
+        adm.setNome(dto.getNome());
+        adm.setSobreNome(dto.getSobreNome());
+        adm.setCpf(dto.getCpf());
+        adm.setTelefone(dto.getTelefone());
+        adm.setAreaAtuacao(dto.getAreaAtuacao());
+        adm.setEmail(dto.getEmail());
+        adm.setDataNascimento(dto.getDataNascimento());
+        adm.setUser(user);
+
+        administradorRepositorio.save(adm);
+
+        return new AdministradorDTO(adm);
     }
 
-    private void copiarAdministradorDTOParaEntidade(AdministradorDTO dto, Administrador entidade) {
-        entidade.setNome(dto.getNome());
-        entidade.setCpf(dto.getCpf());
-        entidade.setSenha(dto.getSenha());
-        entidade.setTelefone(dto.getTelefone());
-        entidade.setAreaAtuacao(dto.getAreaAtuacao());
-        entidade.setEmail(dto.getEmail());
-        entidade.setDataNascimento(dto.getDataNascimento());
 
-
-    }
 
     @Transactional
     public AdministradorDTO atualizar(Long id, AdministradorDTO dto) {
         try {
-
 
             Administrador entidade = administradorRepositorio.getReferenceById(id);
 
@@ -81,5 +105,18 @@ public class AdministradorServico {
         administradorRepositorio.delete(administrador);
     }
 
+
+
+    private void copiarAdministradorDTOParaEntidade(AdministradorDTO dto, Administrador entidade) {
+        entidade.setNome(dto.getNome());
+        entidade.setSobreNome(dto.getSobreNome());
+        entidade.setCpf(dto.getCpf());
+        entidade.setTelefone(dto.getTelefone());
+        entidade.setAreaAtuacao(dto.getAreaAtuacao());
+        entidade.setEmail(dto.getEmail());
+        entidade.setDataNascimento(dto.getDataNascimento());
+
+
+    }
 
 }

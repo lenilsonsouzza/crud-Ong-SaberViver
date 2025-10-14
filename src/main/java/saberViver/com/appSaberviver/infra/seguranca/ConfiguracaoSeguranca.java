@@ -1,5 +1,6 @@
 package saberViver.com.appSaberviver.infra.seguranca;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,48 +12,51 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
-public class configuracaoSeguranca {
+@RequiredArgsConstructor
+public class ConfiguracaoSeguranca {
+
+    private final FiltroDeSeguranca filtroDeSeguranca;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin())) // para H2 Console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
 
+                        // 🔓 Rotas públicas (sem login)
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/registrar").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/alunos/publico/**").permitAll() // cadastro público de aluno
+                        .requestMatchers(HttpMethod.GET, "/atividades/publico/**").permitAll() // listar atividades para público
 
-                        .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/auth/registrar").permitAll()
+                        // 👨‍🎓 VOLUNTÁRIO — logado
+                        .requestMatchers(HttpMethod.POST, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // inserir aluno
+                        .requestMatchers(HttpMethod.PUT, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // editar aluno
+                        .requestMatchers(HttpMethod.GET, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar/buscar aluno
+                        .requestMatchers(HttpMethod.GET, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar atividades
+                        .requestMatchers(HttpMethod.POST, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // criar atividades
 
-                        //  Rotas públicas cadastro de aluno no site)
-                        .requestMatchers(HttpMethod.POST, "/inserir", "/alunos/publico/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/atividades/publico/**").permitAll()
+                        // 👨‍💼 ADMINISTRADOR — logado
+                        .requestMatchers("/voluntarios/**").hasAnyRole("ADM", "ADM_MASTER") // gerenciar voluntários
+                        .requestMatchers(HttpMethod.DELETE, "/alunos/**").hasAnyRole("ADM", "ADM_MASTER") // remover alunos
+                        .requestMatchers(HttpMethod.DELETE, "/atividades/**").hasAnyRole("ADM", "ADM_MASTER") // remover atividades
 
-                        // libera o console H2
+                        // 👑 ADM MASTER — acesso total
+                        .requestMatchers("/adm/**").hasRole("ADM_MASTER") // gerenciar administradores
+                        .requestMatchers("/registrar/adm/**").hasRole("ADM_MASTER") // registrar administradores
+                        .requestMatchers("/registrar/voluntario/**").hasAnyRole("ADM", "ADM_MASTER") // registrar voluntários
 
-                        //         Aluno (apenas logado, qualquer papel)
-                        .requestMatchers("/alunos/**").hasAnyRole("ALUNO", "VOLUNTARIO", "ADM", "ADM_MASTER")
-
-                        //          Voluntário — pode criar/editar alunos e atividades
-                        .requestMatchers(HttpMethod.POST, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER")
-                        .requestMatchers(HttpMethod.PUT, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER")
-
-                        //           Administrador — pode gerenciar voluntários e alunos
-                        .requestMatchers("/voluntarios/**").hasAnyRole("ADM", "ADM_MASTER")
-                        .requestMatchers(HttpMethod.DELETE, "/alunos/**").hasAnyRole("ADM", "ADM_MASTER")
-
-                        //         ADM MASTER — tem acesso total (exemplo: gerenciar outros administradores)
-                        .requestMatchers("/adm/**").hasRole("ADM_MASTER")
-                        //  Todas as outras rotas precisam estar autenticadas
+                        // 🔐 Qualquer outra rota exige autenticação
                         .anyRequest().authenticated()
-
-                ).build();
-
+                )
+                .addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
