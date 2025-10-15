@@ -29,14 +29,19 @@ public class AlunoServico {
         Aluno aluno = alunoRepositorio.findByCpf(cpf).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
         return new AlunoDTO(aluno);
 
+
+    }
+    public List<Aluno> buscarPorNome(String nome) {
+        return alunoRepositorio.findByNomeContainingIgnoreCase(nome);
     }
 
+    /*
     @Transactional(readOnly = true)
     public AlunoDTO findByNome(String nome) {
         Aluno aluno = alunoRepositorio.findByNome(nome).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
         return new AlunoDTO(aluno);
 
-    }
+    }*/
 
     @Transactional(readOnly = true)
     public Page<AlunoDTO> findALL(Pageable page) {
