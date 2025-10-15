@@ -30,7 +30,7 @@ public class AlunoController {
     }
 
     @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity<List<Aluno>> buscarPorNome(@RequestParam String nome) {
+    public ResponseEntity<List<Aluno>> buscarPorNome(@PathVariable String nome) {
         List<Aluno> alunos = alunoServico.buscarPorNome(nome);
         if (alunos.isEmpty()) {
             return ResponseEntity.noContent().build();
