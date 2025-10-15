@@ -13,5 +13,9 @@ import java.util.List;
 public class teste {
     public static void main(String[] args) {
 
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String senhaCriptografada = encoder.encode("30825011");
+            System.out.println(senhaCriptografada);
+        }
     }
-}
+
