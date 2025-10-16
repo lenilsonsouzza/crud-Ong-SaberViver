@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.CadastroVoluntarioDTO;
 import saberViver.com.appSaberviver.dto.VoluntarioDTO;
+import saberViver.com.appSaberviver.entidades.Administrador;
 import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.entidades.user.Role;
@@ -38,9 +39,8 @@ public class VoluntarioServico {
     }
 
     @Transactional(readOnly = true)
-    public VoluntarioDTO findByNome(String nome) {
-        Voluntario professor = voluntarioRepositorio.findByNome(nome).orElseThrow(() -> new ResourceNotFoundException("Nome não encontrado"));
-        return new VoluntarioDTO(professor);
+    public List<Voluntario> buscarPorNome(String nome) {
+        return voluntarioRepositorio.findByNomeContainingIgnoreCase(nome);
     }
 
     @Transactional(readOnly = true)

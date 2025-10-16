@@ -12,7 +12,11 @@ import saberViver.com.appSaberviver.dto.AdministradorDTO;
 import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
 import saberViver.com.appSaberviver.dto.CadastroVoluntarioDTO;
 import saberViver.com.appSaberviver.dto.VoluntarioDTO;
+import saberViver.com.appSaberviver.entidades.Administrador;
+import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.servicos.VoluntarioServico;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,10 +31,14 @@ public class VoluntarioController {
         VoluntarioDTO dto = voluntarioServico.findByCpf(cpf);
         return ResponseEntity.ok(dto);
     }
+
     @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity<VoluntarioDTO> findByNome(@PathVariable String nome) {
-        VoluntarioDTO dto = voluntarioServico.findByNome(nome);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<List<Voluntario>> buscarPorNome(@PathVariable String nome) {
+        List<Voluntario> voluntario = voluntarioServico.buscarPorNome(nome);
+        if (voluntario.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(voluntario);
     }
 
     @GetMapping

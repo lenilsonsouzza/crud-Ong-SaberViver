@@ -12,11 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
 import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
 import saberViver.com.appSaberviver.entidades.Administrador;
+import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.user.Role;
 import saberViver.com.appSaberviver.entidades.user.User;
 import saberViver.com.appSaberviver.repositories.AdministradorRepositorio;
 import saberViver.com.appSaberviver.repositories.UserRepositorio;
 import saberViver.com.appSaberviver.servicos.exceptions.ResourceNotFoundException;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -34,12 +37,9 @@ public class AdministradorServico {
         return new AdministradorDTO(administrador);
     }
     @Transactional(readOnly = true)
-    public AdministradorDTO findyByNome(String nome) {
-        Administrador administrador = administradorRepositorio.findByNome((nome))
-                .orElseThrow(()->new ResourceNotFoundException("Nome não encontrado"));
-        return new AdministradorDTO(administrador);
+    public List<Administrador> buscarPorNome(String nome) {
+        return administradorRepositorio.findByNomeContainingIgnoreCase(nome);
     }
-
 
     @Transactional(readOnly = true)
     public Page<AdministradorDTO> findALL(Pageable page) {

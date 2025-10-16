@@ -1,15 +1,17 @@
 package saberViver.com.appSaberviver.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import saberViver.com.appSaberviver.entidades.Administrador;
 import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VoluntarioRepositorio extends JpaRepository<Voluntario, Long> {
 
     Optional<Voluntario> findByCpf(String cpf);
 
-    Optional<Voluntario> findByNome(String nome);
+    List<Voluntario> findByNomeContainingIgnoreCase(String nome);
 
 }

@@ -12,9 +12,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
 import saberViver.com.appSaberviver.dto.AlunoDTO;
 import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
+import saberViver.com.appSaberviver.entidades.Administrador;
+import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.servicos.AdministradorServico;
 
 import java.net.URI;
+import java.util.List;
 
 
 @RestController
@@ -31,11 +34,14 @@ public class AdministradorController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping(value = "/nome/{nome}")
-    public ResponseEntity<AdministradorDTO> findyByNome(@PathVariable String nome) {
-        AdministradorDTO dto = administradorServico.findyByNome(nome);
-        return ResponseEntity.ok(dto);
 
+    @GetMapping(value = "/nome/{nome}")
+    public ResponseEntity<List<Administrador>> buscarPorNome(@PathVariable String nome) {
+        List<Administrador> administrador = administradorServico.buscarPorNome(nome);
+        if (administrador.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(administrador);
     }
 
     @GetMapping
