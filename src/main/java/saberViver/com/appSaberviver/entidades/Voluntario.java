@@ -29,8 +29,8 @@ public class Voluntario extends Usuario {
 
 
     @ManyToMany
-    @JoinTable(
-            name = "tb_voluntario_atividade", // tabela intermediária
+    @JoinTable(name =
+            "tb_voluntario_atividade", // tabela intermediária
             joinColumns = @JoinColumn(name = "voluntario_id"), // FK colaborador
             inverseJoinColumns = @JoinColumn(name = "atividade_id") // FK atividade
     )
