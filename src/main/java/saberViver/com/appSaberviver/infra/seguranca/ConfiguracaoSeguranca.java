@@ -66,23 +66,19 @@ public class ConfiguracaoSeguranca {
                 .addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // 🌍 Domínios que podem acessar sua API
         config.setAllowedOrigins(List.of(
-                "http://127.0.0.1:5500",   // Live Server local
-                "http://localhost:5500",   // Live Server alternativo
-                "http://localhost:5173",   // Vite (caso use no futuro)
-                "https://saberviver-api.up.railway.app" // seu domínio do backend
-                // "https://seu-front-hospedado.com" (adicione quando publicar o front)
+                "http://127.0.0.1:5500",
+                "http://localhost:5500",
+                "http://localhost:5173",
+                "https://saberviver-api.up.railway.app",
+                "null"
         ));
-
-        // ✅ Métodos e cabeçalhos permitidos
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
