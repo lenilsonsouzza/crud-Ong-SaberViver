@@ -27,14 +27,11 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-
+        System.out.println("🚦 PATH RECEBIDO: " + request.getRequestURI());
         String path = request.getRequestURI();
 
         // 🟢 Ignora rotas públicas (sem autenticação)
-        if (path.contains("/auth/login") ||
-                path.contains("/alunos/publico") ||
-                path.contains("/atividades/publico") ||
-                path.contains("/h2-console")) {
+        if (path.matches(".*(/auth/login|/alunos/publico|/atividades/publico|/h2-console).*")) {
             filterChain.doFilter(request, response);
             return;
         }
