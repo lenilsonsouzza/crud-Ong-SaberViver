@@ -72,7 +72,7 @@ public class ConfiguracaoSeguranca {
         CorsConfiguration config = new CorsConfiguration();
 
         // Durante testes (sem front ainda)
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173","http://127.0.0.1:5500"));
 
         // Quando o front estiver hospedado, troque por algo assim:
         // config.setAllowedOrigins(List.of(
