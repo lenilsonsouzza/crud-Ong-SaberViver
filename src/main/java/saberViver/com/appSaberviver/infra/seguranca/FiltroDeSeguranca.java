@@ -31,11 +31,10 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // 🟢 Ignora rotas públicas (sem autenticação)
-        if (path.startsWith("/auth/login") ||
-                path.startsWith("/alunos/publico") ||
-                path.startsWith("/atividades/publico") ||
-                path.startsWith("/h2-console")) {
-
+        if (path.contains("/auth/login") ||
+                path.contains("/alunos/publico") ||
+                path.contains("/atividades/publico") ||
+                path.contains("/h2-console")) {
             filterChain.doFilter(request, response);
             return;
         }
