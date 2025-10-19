@@ -64,7 +64,7 @@ public class ConfiguracaoSeguranca {
                         // 🔐 Qualquer outra rota exige autenticação
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
