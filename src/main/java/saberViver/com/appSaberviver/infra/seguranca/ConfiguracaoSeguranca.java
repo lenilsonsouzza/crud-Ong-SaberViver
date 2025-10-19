@@ -40,7 +40,6 @@ public class ConfiguracaoSeguranca {
                         // 🔓 Rotas públicas (sem login)
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/registrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/alunos/publico/**").permitAll() // cadastro público de aluno
                         .requestMatchers(HttpMethod.GET, "/atividades/publico/**").permitAll() // listar atividades para público
 
@@ -64,7 +63,7 @@ public class ConfiguracaoSeguranca {
                         // 🔐 Qualquer outra rota exige autenticação
                         .anyRequest().authenticated()
                 )
-                //.addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filtroDeSeguranca, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
