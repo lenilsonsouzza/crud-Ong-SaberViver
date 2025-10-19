@@ -40,7 +40,9 @@ public class ConfiguracaoSeguranca {
                         // 🔓 Rotas públicas (sem login)
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/alunos/publico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/alunos/publico/**").permitAll() // cadastro público de aluno
+                        .requestMatchers(HttpMethod.GET, "/atividades/publico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/atividades/publico/**").permitAll() // listar atividades para público
 
                         // 👨‍🎓 VOLUNTÁRIO — logado
