@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/administradores")
+@RequestMapping("/administrador")
 @RequiredArgsConstructor
 public class AdministradorController {
 
