@@ -27,36 +27,50 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
-        var token = this.recoverToken(request);
+
+        String path = request.getRequestURI();
+
+        // 🟢 Ignora rotas públicas (sem autenticação)
+        if (path.startsWith("/auth/login") ||
+                path.startsWith("/alunos/publico") ||
+                path.startsWith("/atividades/publico") ||
+                path.startsWith("/h2-console")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 🔐 Processa token normalmente para rotas protegidas
+        String token = recoverToken(request);
         if (token != null) {
             try {
-                var login = tokenServer.validarToken(token);
+                String login = tokenServer.validarToken(token);
                 if (login != null) {
                     UserDetails user = userRepositorio.findBylogin(login);
-
                     if (user != null) {
-                        var autenticacao = new UsernamePasswordAuthenticationToken
-                                (user, null, user.getAuthorities());
+                        var autenticacao = new UsernamePasswordAuthenticationToken(
+                                user, null, user.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(autenticacao);
                     } else {
-                        System.out.println(" Usuario não encontrado para Login: " + login);
+                        System.out.println("Usuário não encontrado para login: " + login);
                     }
                 } else {
-                    System.out.println("token invalido ou expirado");
+                    System.out.println("Token inválido ou expirado");
                 }
             } catch (Exception e) {
-                System.out.println("Erro ao validar token " + e.getMessage());
+                System.out.println("Erro ao validar token: " + e.getMessage());
             }
         }
+
         filterChain.doFilter(request, response);
     }
 
+    // 🧩 Método auxiliar que extrai o token JWT do cabeçalho Authorization
     private String recoverToken(HttpServletRequest request) {
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return null;
         }
-
         return authHeader.replace("Bearer ", "");
     }
 }
