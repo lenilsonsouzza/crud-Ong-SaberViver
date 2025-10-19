@@ -19,7 +19,7 @@ import saberViver.com.appSaberviver.servicos.AdministradorServico;
 import java.net.URI;
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/administrador")
 @RequiredArgsConstructor

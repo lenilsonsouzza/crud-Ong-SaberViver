@@ -13,7 +13,7 @@ import saberViver.com.appSaberviver.servicos.AlunoServico;
 
 import java.net.URI;
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/alunos")
 @RequiredArgsConstructor

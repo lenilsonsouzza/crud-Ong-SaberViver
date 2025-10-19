@@ -17,7 +17,7 @@ import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.servicos.VoluntarioServico;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/voluntarios")

@@ -15,7 +15,7 @@ import saberViver.com.appSaberviver.servicos.AtividadeServico;
 
 import java.net.URI;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/atividades")
 public class AtividadeController {
