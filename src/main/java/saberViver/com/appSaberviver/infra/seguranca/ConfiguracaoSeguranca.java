@@ -71,18 +71,16 @@ public class ConfiguracaoSeguranca {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Durante testes (sem front ainda)
+        // 🌍 Domínios que podem acessar sua API
         config.setAllowedOrigins(List.of(
-                "http://127.0.0.1:5500",
-                "http://localhost:5500",
-                "http://localhost:5173"));
+                "http://127.0.0.1:5500",   // Live Server local
+                "http://localhost:5500",   // Live Server alternativo
+                "http://localhost:5173",   // Vite (caso use no futuro)
+                "https://saberviver-api.up.railway.app" // seu domínio do backend
+                // "https://seu-front-hospedado.com" (adicione quando publicar o front)
+        ));
 
-        // Quando o front estiver hospedado, troque por algo assim:
-        // config.setAllowedOrigins(List.of(
-        //     "https://saber-viver-front.up.railway.app",
-        //     "http://localhost:5173"
-        // ));
-
+        // ✅ Métodos e cabeçalhos permitidos
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
