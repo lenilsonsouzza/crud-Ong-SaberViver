@@ -7,13 +7,13 @@ public enum Role {
     VOLUNTARIO("VOLUNTARIO"),
     ADM("ADM"),
     ADM_MASTER("ADM_MASTER");
-    private String roler;
+    private String role;
 
-    Role(String roler) {
-        this.roler = roler;
+    Role(String role) {
+        this.role = role;
     }
 
-    public String getRoler() {
-        return roler;
+    public String getRole() {
+        return role;
     }
 }

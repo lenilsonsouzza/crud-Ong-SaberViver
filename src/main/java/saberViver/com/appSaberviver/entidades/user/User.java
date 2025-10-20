@@ -35,23 +35,23 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         if (this.role == Role.ADM_MASTER) return List.of(
-                new SimpleGrantedAuthority("ROLE_"+ Role.ADM_MASTER.getRoler().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRoler().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
+                new SimpleGrantedAuthority("ROLE_"+ Role.ADM_MASTER.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
 
         else if (this.role == Role.ADM) return List.of(
-                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRoler().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
+                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
 
         else if (this.role == Role.VOLUNTARIO)
             return List.of(
-                    new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
-                    new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
+                    new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRole().toUpperCase()),
+                    new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
 
         else return List.of(
-                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
+                new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
     }
 
     @Override
