@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.AdministradorDTO;
 import saberViver.com.appSaberviver.dto.CadastroAdministradorDTO;
 import saberViver.com.appSaberviver.entidades.Administrador;
-import saberViver.com.appSaberviver.entidades.Aluno;
 import saberViver.com.appSaberviver.entidades.user.Role;
 import saberViver.com.appSaberviver.entidades.user.User;
 import saberViver.com.appSaberviver.repositories.AdministradorRepositorio;
@@ -58,7 +57,7 @@ public class AdministradorServico {
         User userLogado = SecurityContextHolderHelper.getUser();
 
 
-        if (userLogado.getRoler() != Role.ADM_MASTER) {
+        if (userLogado.getRole() != Role.ADM_MASTER) {
             throw new AccessDeniedException("Apenas ADM_MASTER pode criar ADM");
         }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import saberViver.com.appSaberviver.dto.CadastroVoluntarioDTO;
 import saberViver.com.appSaberviver.dto.VoluntarioDTO;
-import saberViver.com.appSaberviver.entidades.Administrador;
 import saberViver.com.appSaberviver.entidades.Atividade;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.entidades.user.Role;
@@ -61,7 +60,7 @@ public class VoluntarioServico {
 
 
 
-        if (userLogado.getRoler() != Role.ADM && userLogado.getRoler() != Role.ADM_MASTER) {
+        if (userLogado.getRole() != Role.ADM && userLogado.getRole() != Role.ADM_MASTER) {
             throw new AccessDeniedException("Não autorizado a criar voluntário");
         }
 

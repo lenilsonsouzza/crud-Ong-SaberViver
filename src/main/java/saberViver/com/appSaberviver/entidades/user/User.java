@@ -23,29 +23,29 @@ public class User implements UserDetails {
     private String login;
     private String senha;
     @Enumerated(EnumType.STRING)
-    private Role roler;
+    private Role role;
 
     public User (String login, String senha, Role role){
         this.login=login;
         this.senha=senha;
-        this.roler =role;
+        this.role =role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        if (this.roler == Role.ADM_MASTER) return List.of(
+        if (this.role == Role.ADM_MASTER) return List.of(
                 new SimpleGrantedAuthority("ROLE_"+ Role.ADM_MASTER.getRoler().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRoler().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
 
-        else if (this.roler == Role.ADM) return List.of(
+        else if (this.role == Role.ADM) return List.of(
                 new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRoler().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
 
-        else if (this.roler == Role.VOLUNTARIO)
+        else if (this.role == Role.VOLUNTARIO)
             return List.of(
                     new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRoler().toUpperCase()),
                     new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRoler().toUpperCase()));
