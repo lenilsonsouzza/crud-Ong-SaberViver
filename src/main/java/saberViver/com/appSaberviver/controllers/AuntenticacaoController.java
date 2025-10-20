@@ -30,9 +30,12 @@ public class AuntenticacaoController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AunteticacaoDTO aunteticacaoDTO) {
         var usernameSenha = new UsernamePasswordAuthenticationToken(aunteticacaoDTO.getLogin(), aunteticacaoDTO.getSenha());
         var auth = this.authenticationManager.authenticate(usernameSenha);
-        var token = tokenServer.gerarToken((User) auth.getPrincipal());
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        var user = (User) auth.getPrincipal();
+        var token = tokenServer.gerarToken(user);
+
+        var userInfo = new LoginResponseDTO.UserInfo(user.getLogin(), user.getRole());
+        var response = new LoginResponseDTO(token, userInfo);
+
+        return ResponseEntity.ok(response);
     }
-
-
 }
