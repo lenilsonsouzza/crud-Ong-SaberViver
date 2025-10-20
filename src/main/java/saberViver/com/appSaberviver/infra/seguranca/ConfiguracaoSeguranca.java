@@ -50,6 +50,7 @@ public class ConfiguracaoSeguranca {
                         .requestMatchers(HttpMethod.PUT, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // editar aluno
                         .requestMatchers(HttpMethod.GET, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar/buscar aluno
                         .requestMatchers(HttpMethod.GET, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar atividades
+                        .requestMatchers(HttpMethod.GET, "/usuarios/me").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // retornar dados usuario
                         .requestMatchers(HttpMethod.POST, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // criar atividades
 
                         // 👨‍💼 ADMINISTRADOR — logado
