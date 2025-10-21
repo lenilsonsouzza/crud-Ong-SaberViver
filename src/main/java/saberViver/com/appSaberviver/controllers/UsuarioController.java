@@ -49,7 +49,7 @@ public class UsuarioController {
         }
 
         // ADMINISTRADOR → retorna os dados completos do Administrador
-        if (role == Role.ADMIN) {
+        if (role == Role.ADM) {
             Administrador adm = administradorRepositorio.findByUser(user.get());
             if (adm == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador não encontrado");

@@ -37,12 +37,12 @@ public class User implements UserDetails {
 
         if (this.role == Role.ADM_MASTER) return List.of(
                 new SimpleGrantedAuthority("ROLE_"+ Role.ADM_MASTER.getRole().toUpperCase()),
-                new SimpleGrantedAuthority("ROLE_"+ Role.ADMIN.getRole().toUpperCase()),
+                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRole().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRole().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
 
-        else if (this.role == Role.ADMIN) return List.of(
-                new SimpleGrantedAuthority("ROLE_"+ Role.ADMIN.getRole().toUpperCase()),
+        else if (this.role == Role.ADM) return List.of(
+                new SimpleGrantedAuthority("ROLE_"+ Role.ADM.getRole().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.VOLUNTARIO.getRole().toUpperCase()),
                 new SimpleGrantedAuthority("ROLE_"+ Role.ALUNO.getRole().toUpperCase()));
 

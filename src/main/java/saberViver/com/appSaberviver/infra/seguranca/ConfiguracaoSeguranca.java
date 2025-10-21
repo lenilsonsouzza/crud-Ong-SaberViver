@@ -46,22 +46,22 @@ public class ConfiguracaoSeguranca {
                         .requestMatchers(HttpMethod.GET, "/atividades/publico/**").permitAll() // listar atividades para público
 
                         // 👨‍🎓 VOLUNTÁRIO — logado
-                        .requestMatchers(HttpMethod.POST, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // inserir aluno
-                        .requestMatchers(HttpMethod.PUT, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // editar aluno
-                        .requestMatchers(HttpMethod.GET, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // listar/buscar aluno
-                        .requestMatchers(HttpMethod.GET, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // listar atividades
-                        .requestMatchers(HttpMethod.GET, "/usuarios/me").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // retornar dados usuario
-                        .requestMatchers(HttpMethod.POST, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADMIN", "ADM_MASTER") // criar atividades
+                        .requestMatchers(HttpMethod.POST, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // inserir aluno
+                        .requestMatchers(HttpMethod.PUT, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // editar aluno
+                        .requestMatchers(HttpMethod.GET, "/alunos/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar/buscar aluno
+                        .requestMatchers(HttpMethod.GET, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // listar atividades
+                        .requestMatchers(HttpMethod.GET, "/usuarios/me").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // retornar dados usuario
+                        .requestMatchers(HttpMethod.POST, "/atividades/**").hasAnyRole("VOLUNTARIO", "ADM", "ADM_MASTER") // criar atividades
 
                         // 👨‍💼 ADMINISTRADOR — logado
-                        .requestMatchers("/voluntarios/**").hasAnyRole("ADMIN", "ADM_MASTER") // gerenciar voluntários
-                        .requestMatchers(HttpMethod.DELETE, "/alunos/**").hasAnyRole("ADMIN", "ADM_MASTER") // remover alunos
-                        .requestMatchers(HttpMethod.DELETE, "/atividades/**").hasAnyRole("ADMIN", "ADM_MASTER") // remover atividades
+                        .requestMatchers("/voluntarios/**").hasAnyRole("ADM", "ADM_MASTER") // gerenciar voluntários
+                        .requestMatchers(HttpMethod.DELETE, "/alunos/**").hasAnyRole("ADM", "ADM_MASTER") // remover alunos
+                        .requestMatchers(HttpMethod.DELETE, "/atividades/**").hasAnyRole("ADM", "ADM_MASTER") // remover atividades
 
                         // 👑 ADM MASTER — acesso total
                         .requestMatchers("/adm/**").hasRole("ADM_MASTER") // gerenciar administradores
-                        .requestMatchers("/registrar/admin/**").hasRole("ADM_MASTER") // registrar administradores
-                        .requestMatchers("/registrar/voluntario/**").hasAnyRole("ADMIN", "ADM_MASTER") // registrar voluntários
+                        .requestMatchers("/registrar/adm/**").hasRole("ADM_MASTER") // registrar administradores
+                        .requestMatchers("/registrar/voluntario/**").hasAnyRole("ADM", "ADM_MASTER") // registrar voluntários
 
                         // 🔐 Qualquer outra rota exige autenticação
                         //.anyRequest().authenticated()

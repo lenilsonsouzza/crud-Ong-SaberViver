@@ -60,7 +60,7 @@ public class VoluntarioServico {
 
 
 
-        if (userLogado.getRole() != Role.ADMIN && userLogado.getRole() != Role.ADM_MASTER) {
+        if (userLogado.getRole() != Role.ADM && userLogado.getRole() != Role.ADM_MASTER) {
             throw new AccessDeniedException("Não autorizado a criar voluntário");
         }
 
