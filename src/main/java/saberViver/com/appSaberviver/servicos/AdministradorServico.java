@@ -61,7 +61,7 @@ public class AdministradorServico {
             throw new AccessDeniedException("Apenas ADM_MASTER pode criar ADM");
         }
 
-        User user = new User(dto.getLogin(), passwordEncoder.encode(dto.getSenha()), Role.ADM);
+        User user = new User(dto.getLogin(), passwordEncoder.encode(dto.getSenha()), Role.ADMIN);
         userRepositorio.save(user);
 
         Administrador adm = new Administrador();
