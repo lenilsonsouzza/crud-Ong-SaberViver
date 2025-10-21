@@ -5,7 +5,7 @@ public enum Role {
 
     ALUNO("ALUNO"),
     VOLUNTARIO("VOLUNTARIO"),
-    ADMIN("ADM"),
+    ADMIN("ADMIN"),
     ADM_MASTER("ADM_MASTER");
     private String role;
 
