@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/administrador")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdministradorController {
 
