@@ -77,7 +77,8 @@ public class ConfiguracaoSeguranca {
                 "http://127.0.0.1:5500",
                 "http://localhost:5500",
                 "http://localhost:5173",
-                "https://front-ong-saberviver-production.up.railway.app"
+                "https://front-ong-saberviver-production.up.railway.app",
+                "https://ong-saberviver.up.railway.app" // ⚡ nova URL adicionada
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
