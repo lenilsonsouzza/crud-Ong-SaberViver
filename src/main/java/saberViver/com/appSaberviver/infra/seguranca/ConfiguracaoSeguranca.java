@@ -63,7 +63,7 @@ public class ConfiguracaoSeguranca {
                         .requestMatchers("/registrar/adm/**").hasRole("ADM_MASTER") // registrar administradores
                         .requestMatchers("/registrar/voluntario/**").hasAnyRole("ADM", "ADM_MASTER") // registrar voluntários
 
-                        // 🔐 Qualquer outra rota exige autenticação
+
                         //.anyRequest().authenticated()
                         .anyRequest().permitAll()
                 )
@@ -78,7 +78,7 @@ public class ConfiguracaoSeguranca {
                 "http://localhost:5500",
                 "http://localhost:5173",
                 "https://front-ong-saberviver-production.up.railway.app",
-                "https://ong-saberviver.up.railway.app" // ⚡ nova URL adicionada
+                "https://ong-saberviver.up.railway.app"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
