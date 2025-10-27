@@ -38,7 +38,7 @@ public class ConfiguracaoSeguranca {
                 .authorizeHttpRequests(authorize -> authorize
 
                         // 🔓 Rotas públicas (sem login)
-                        .requestMatchers("/h2-console/**").permitAll()
+                        //.requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/alunos/publico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/alunos/publico/**").permitAll() // cadastro público de aluno
@@ -77,7 +77,7 @@ public class ConfiguracaoSeguranca {
                 "http://127.0.0.1:5500",
                 "http://localhost:5500",
                 "http://localhost:5173",
-                "https://front-ong-saberviver-production.up.railway.app",
+                "https://vercel.com/lenilsonsouzzas-projects/ong-sabeviver",
                 "https://ong-saberviver.up.railway.app"
         ));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
