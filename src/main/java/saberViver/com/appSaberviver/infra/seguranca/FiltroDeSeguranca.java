@@ -30,13 +30,13 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
         System.out.println("🚦 PATH RECEBIDO: " + request.getRequestURI());
         String path = request.getRequestURI();
 
-        // 🟢 Ignora rotas públicas (sem autenticação)
+        //  Ignora rotas públicas (sem autenticação)
         if (path.matches(".*(/auth/login|/alunos/publico|/atividades/publico|/h2-console).*")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 Processa token normalmente para rotas protegidas
+        // Processa token normalmente para rotas protegidas
         String token = recoverToken(request);
         if (token != null) {
             try {
@@ -61,7 +61,7 @@ public class FiltroDeSeguranca extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // 🧩 Método auxiliar que extrai o token JWT do cabeçalho Authorization
+    //  Metodo auxiliar que extrai o token JWT do cabeçalho Authorization
     private String recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

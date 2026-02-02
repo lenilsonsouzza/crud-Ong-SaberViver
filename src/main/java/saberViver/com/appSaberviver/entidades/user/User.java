@@ -1,6 +1,7 @@
 package saberViver.com.appSaberviver.entidades.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,7 @@ public class User implements UserDetails {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String login;
+    @JsonIgnore
     private String senha;
     @Enumerated(EnumType.STRING)
 
