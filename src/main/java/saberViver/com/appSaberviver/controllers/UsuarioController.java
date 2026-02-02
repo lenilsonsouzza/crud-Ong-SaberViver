@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import saberViver.com.appSaberviver.dto.UsuarioMeResponseDTO;
 import saberViver.com.appSaberviver.entidades.Administrador;
 import saberViver.com.appSaberviver.entidades.Voluntario;
 import saberViver.com.appSaberviver.entidades.user.Role;
@@ -31,41 +32,59 @@ public class UsuarioController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getUsuarioAutenticado(@AuthenticationPrincipal User userAutenticado) {
+
         if (userAutenticado == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // Busca o User completo no banco (caso precise de mais dados)
-        Optional<User> user = userRepositorio.findByLogin(userAutenticado.getUsername());
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
-        }
+        User user = userRepositorio
+                .findByLogin(userAutenticado.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        Role role = user.get().getRole();
+        Role role = user.getRole();
 
-        // ADM_MASTER → retorna apenas os dados básicos
+        // ADM_MASTER
         if (role == Role.ADM_MASTER) {
-            return ResponseEntity.ok(user.get());
+            return ResponseEntity.ok(
+                    new UsuarioMeResponseDTO(
+                            user.getLogin(),
+                            role,
+                            null,
+                            null,
+                            "Administrador Master"
+                    )
+            );
         }
 
-        // ADMINISTRADOR → retorna os dados completos do Administrador
+        // ADMINISTRADOR
         if (role == Role.ADM) {
-            Administrador adm = administradorRepositorio.findByUser(user.get());
-            if (adm == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Administrador não encontrado");
-            }
-            return ResponseEntity.ok(adm);
+            Administrador adm = administradorRepositorio.findByUser(user);
+            return ResponseEntity.ok(
+                    new UsuarioMeResponseDTO(
+                            user.getLogin(),
+                            role,
+                            null,
+                            adm.getId(),
+                            adm.getNome()
+                    )
+            );
         }
 
-        // VOLUNTARIO → retorna os dados completos do Voluntario
+        // VOLUNTARIO
         if (role == Role.VOLUNTARIO) {
-            Voluntario vol = voluntarioRepositorio.findByUser(user.get());
-            if (vol == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voluntário não encontrado");
-            }
-            return ResponseEntity.ok(vol);
+            Voluntario vol = voluntarioRepositorio.findByUser(user);
+            return ResponseEntity.ok(
+                    new UsuarioMeResponseDTO(
+                            user.getLogin(),
+                            role,
+                            vol.getId(),
+                            null,
+                            vol.getNome()
+                    )
+            );
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tipo de usuário não reconhecido");
+        return ResponseEntity.badRequest().build();
     }
+
 }
