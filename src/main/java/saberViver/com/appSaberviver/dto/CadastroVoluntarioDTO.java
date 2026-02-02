@@ -28,7 +28,6 @@ public class CadastroVoluntarioDTO {
     private String cpf;
     @NotNull
     private LocalDate dataNascimento;
-    private long id;
     @NotBlank(message = "a area de atuação é obrigatorio")
     private String areaAtuacao;
     @NotBlank(message = " email é obrigatorio")
